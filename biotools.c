@@ -28,13 +28,15 @@ int main(int argc, char *argv[]){
     printf("revcom:\t%s\n", r_ptr->seq);
     
     SEQ *t_ptr;
-    t_ptr = transcript(s_ptr);
+    t_ptr = transcript(s_ptr);                                              /* compute transcription of gene sequence */
     printf("name:\t%s\n", t_ptr->name);
     printf("mRNA:\t%s\n", t_ptr->seq);
     
-    int cnt;
-    cnt = scount(s_ptr, "ATG");
-    printf("cnt:\t%d\n", cnt);
+    unsigned long cnt;
+    cnt = scount(s_ptr, "ATG");                                             /* count 'ATG' occurrences in sequence */
+    printf("cnt:\t%lu\n", cnt);
+    
+    printf("genelen:\t%lu\n", genelen(s_ptr));                              /* get gene length */
     
     return 0;
 }
