@@ -8,25 +8,15 @@
 #ifndef biotools_h
 #define biotools_h
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include "biotypes.h"                   /* include types: !!! THIS MUST BE DONE BEFORE INCLUDING OTHER FILES THAT USES THIS ONE !!! */
+#include "bioconst.h"                   /* include constant: !!! THIS MUST BE DONE BEFORE INCLUDING OTHER FILES THAT USES THIS ONE !!! */
+#include "allocator.h"                  /* define functions for handling dynamically allocation of the memory */
+#include "biostr.h"                     /* define functions for string manipulation */
+#include "revcomp.h"                    /* define function for computing the reverse complement of a SEQ object */
 
-#define DEFAULT_SIZE 100
-#define A2T ('t'-'a')                   /* symbolic constant that allow to switch from 'A' to 'T' and vice versa */
-#define C2G ('g'-'c')                   /* symbolic constant that allow to switch from 'C' to 'G' and vice versa */
 
-typedef struct dna {
-    char *name;
-    char *seq;
-} SEQ;
-
-typedef struct flag {
-    unsigned int eof : 1;
-} FLAG;
-
-SEQ *rev_complement(SEQ *);             /* take a sequence and return the reverse complement of that sequence */
 SEQ *getsequence(SEQ *, FILE *);        /* read the FILE and return a new sequence */
 SEQ *transcript(SEQ *);                 /* take a DNA sequence and return an RNA sequence */
+
 
 #endif /* biotools_h */
