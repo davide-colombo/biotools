@@ -16,7 +16,8 @@
 #include "biovar.h"
 FLAG ctrl;
 
-unsigned long scount(SEQ *, char *);
-unsigned long genelen(SEQ *);
+STAT_T scount(SEQ *, char *);
+STAT_T genelen(SEQ *);
+double gcperc(SEQ *);
 
 #endif /* biostat_h */

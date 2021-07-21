@@ -38,5 +38,7 @@ int main(int argc, char *argv[]){
     
     printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     
+    printf("gc%%:\t%.4g\n", gcperc(s_ptr));                                 /* gc percentage */
+    
     return 0;
 }

@@ -25,3 +25,16 @@ STAT_T scount(SEQ *s_ptr, char *s){
 STAT_T genelen(SEQ *s_ptr){
     return strlen(s_ptr->seq);
 }
+
+double gcperc(SEQ *s_ptr){
+    
+    char *ptr;                                              /* defined for improving code readability */
+    ptr = s_ptr->seq;
+    
+    double gc;
+    int i;
+    for(gc = 0.0, i = 0; ptr[i]; i++)
+        if(ptr[i] == 'G' || ptr[i] == 'C')
+            gc++;
+    return gc / i;
+}
