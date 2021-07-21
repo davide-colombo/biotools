@@ -12,15 +12,17 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DEFAULT_SIZE 10
-#define A2T ('t'-'a')               /* symbolic constant that allow to switch from 'A' to 'T' and vice versa */
-#define C2G ('g'-'c')               /* symbolic constant that allow to switch from 'C' to 'G' and vice versa */
+#define DEFAULT_SIZE 100
+#define A2T ('t'-'a')                   /* symbolic constant that allow to switch from 'A' to 'T' and vice versa */
+#define C2G ('g'-'c')                   /* symbolic constant that allow to switch from 'C' to 'G' and vice versa */
 
-typedef char *_DNA_;                /* define DNA datatype */
-typedef char *_RNA_;
+typedef struct dna {
+    char *name;
+    char *seq;
+} SEQ;
 
-_DNA_ rev_complement(_DNA_);
-_DNA_ getsequence(_DNA_, FILE *);
-_RNA_ transcript(_DNA_);
+SEQ *rev_complement(SEQ *);             /* take a sequence and return the reverse complement of that sequence */
+SEQ *getsequence(SEQ *, FILE *);        /* read the FILE and return a new sequence */
+SEQ *transcript(SEQ *);                 /* take a DNA sequence and return an RNA sequence */
 
 #endif /* biotools_h */

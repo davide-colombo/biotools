@@ -12,6 +12,7 @@ char *alloc_chararray(unsigned);
 void reverse(char *);
 void __strcpy(char *, char *);
 char *__realloc(char *, unsigned long);
+SEQ *alloc_sequence(void);                              /* OK */
 
 int main(int argc, char *argv[]){
     
@@ -27,13 +28,15 @@ int main(int argc, char *argv[]){
         }
     }
     
-    _DNA_ seq;              /* declare pointer to _DNA_ sequence */
-    if((seq = getsequence(seq, fp)) == NULL){
+    SEQ *s_ptr = NULL;                                            /* pointer to a new sequence */
+    
+    if(getsequence(s_ptr, fp) == NULL){
         fprintf(stderr, "error in biotools.c: can't read sequence\n");
         return 3;
     }
     
-    printf("%s\n", seq);
+    printf("back to the main\n");
+    // printf("%s\n", s_ptr->seq);
     
     
     /*
@@ -57,65 +60,90 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-_DNA_ getsequence(_DNA_ ptr, FILE *fp){
-
-    if((ptr = (_DNA_)alloc_chararray(DEFAULT_SIZE)) == NULL)
-        return NULL;
+SEQ *getsequence(SEQ *s_ptr, FILE *fp){
+    
+    if(s_ptr == NULL){
+        s_ptr = alloc_sequence();
+        s_ptr->seq = NULL;
+        s_ptr->name = NULL;
+    }
     
     unsigned long size = DEFAULT_SIZE;
-    int i;
-    int c;
+    char *temp = alloc_chararray(size);
+    
+    int c, i;
     for(i = 0; (c = getc(fp)) != EOF; i++){
         if(i >= size){
-            size += 1000;
-            _DNA_ tmp;
-            if((tmp = (_DNA_)__realloc(ptr, size)) == NULL)
+            //temp[size] = '\0';
+            if((temp = __realloc(temp, size+=1000)) == NULL)
                 return NULL;
-            ptr = tmp;
         }
-        ptr[i] = c;
+       temp[i] = c;
     }
-    ptr[i] = '\0';
-    return ptr;
+    printf("%s\n", temp);
+    printf("i = %d\n", i);
+    printf("out\n");
+    printf("strlen = %lu\n", strlen(temp));
+    temp[i] = '\0';
+    return s_ptr;
 }
 
-_DNA_ rev_complement(_DNA_ s){
+SEQ *rev_complement(SEQ *s_ptr){
     int c;
-    while((c = *s) == ' ' || c == '\t')
-        s++;
+    while((c = *s_ptr->seq) == ' ' || c == '\t')
+        s_ptr->seq++;
     
-    _DNA_ ptr;
-    if((ptr = (_DNA_)alloc_chararray(strlen(s)+1)) == NULL)                   /* +1 for '\0' */
+    char *ptr;
+    if((ptr = alloc_chararray(strlen(s_ptr->seq)+1)) == NULL)       /* +1 for '\0' */
         return NULL;
     
     int i;
+    char *s;
+    s = s_ptr->seq;
     for(i = 0; isalpha(s[i]); i++)
-        ptr[i] = ((s[i] == 'A' || s[i] == 'a') ? s[i]+A2T :
-                  (s[i] == 'T' || s[i] == 't') ? s[i]-A2T :
-                  (s[i] == 'C' || s[i] == 'c') ? s[i]+C2G : s[i]-C2G);
+        ptr[i] = ((s[i] == 'A') ? s[i]+A2T :
+                  (s[i] == 'T') ? s[i]-A2T :
+                  (s[i] == 'C') ? s[i]+C2G : s[i]-C2G);
     ptr[i] = '\0';
-    reverse(ptr);
-    return ptr;
+    reverse(ptr);                                                   /* compute the reverse of the complement */
+    
+    SEQ *rev;
+    if((rev = alloc_sequence()) == NULL)
+        return NULL;
+    strcpy(rev->seq, ptr);                                          /* copy the reverse of the complement string */
+    strcpy(rev->name, s_ptr->name);                                 /* sequence name is the same */
+    return rev;
 }
 
-_RNA_ transcript(_DNA_ s){
+SEQ *transcript(SEQ *s_ptr){
     int c;
-    while((c = *s) == ' ' || c == '\t')
+    while((c = *s_ptr->seq) == ' ' || c == '\t')
         ;
     
-    _RNA_ ptr;
-    if((ptr = (_RNA_)alloc_chararray(strlen(s)+1)) == NULL)
+    char *ptr;
+    if((ptr = alloc_chararray(strlen(s_ptr->seq)+1)) == NULL)
         return NULL;
     
     int i;
+    char *s;
+    s = s_ptr->seq;
     for(i = 0; isalpha(s[i]); i++)
         ptr[i] = (s[i] == 'T' || s[i] == 't') ? s[i]+1 : s[i];
     ptr[i] = '\0';
-    return ptr;
+    
+    SEQ *mrna;
+    if((mrna = alloc_sequence()) == NULL)
+        return NULL;
+    strcpy(mrna->seq, ptr);
+    strcpy(mrna->name, s_ptr->name);
+    
+    free((void *)ptr);                      /* frees memory used to store the string */
+    
+    return mrna;
 }
 
 char *alloc_chararray(unsigned size){
-    return (char *)malloc(sizeof(char) * size);
+    return (char *)malloc(sizeof(char) * (size + 1));       /* +1 for '\0' */
 }
 
 void reverse(char *s){
@@ -135,6 +163,10 @@ char *__realloc(char *s, unsigned long sz){
 
 void __strcpy(char *to, char *from){
     int i;
-    for(i = 0; from[i]; i++)                /* loops until reaches a null character */
+    for(i = 0; from[i]; i++)                /* loops and copy until reaches a null character */
         to[i] = from[i];
+}
+
+SEQ *alloc_sequence(void){
+    return (SEQ *)malloc(sizeof(SEQ));
 }
