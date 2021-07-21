@@ -42,6 +42,7 @@ STAT_T repcount(SEQ *s_ptr, char c, unsigned minlen){
     
     if(ctrl.eof)
         ctrl.eof = 0;
+    
     return cnt;
 }
 
@@ -64,4 +65,41 @@ double gcperc(SEQ *s_ptr){
         if(ptr[i] == 'G' || ptr[i] == 'C')
             gc++;
     return gc / i;
+}
+
+OCC **findocc(SEQ *s_ptr, char *s){
+    
+    unsigned long size = INITSIZE;
+    
+    OCC **fptr;                                                 /* define an array of pointer to OCC typedef objects */
+    int nocc = 0;
+    OCC *o_ptr;                                                 /* pointer to OCC object that will be allocated during the search */
+    
+    char *ptr;                                                  /* define a pointer to char for increase code readability */
+    ptr = s_ptr->seq;
+    
+    fptr = (OCC **)malloc(sizeof(OCC *) * 10);
+    
+    STAT_T matchpos;                                            /* position of the match within string pointed by ptr */
+    int i;
+    for(i = 0; !ctrl.eof; i+=(matchpos+strlen(s))){
+        if((matchpos = sfind(ptr, s, i)) != NOTFOUND){
+            if(nocc >= size){
+                // TODO: realloc OCC array
+            }
+            
+            if((o_ptr = (OCC *)malloc(sizeof(OCC))) == NULL)    /* occurrence found: alloc a new OCC object */
+                raise_error("findocc() can't alloc memory for OCC object\n");
+            o_ptr->strpos = matchpos;                           /* save start position */
+            o_ptr->length = strlen(s);                          /* save match length */
+            fptr[nocc++] = o_ptr;                               /* save occurrence in the OCC array of pointers and increase 'nocc' by 1 */
+        }
+    }
+    
+    fptr[nocc] = NULL;                                          /* stop the searching when printing */
+    
+    if(ctrl.eof)                                            /* reset the flag used by the callee to signal the end of the string to be scanned */
+        ctrl.eof = 0;
+    
+    return fptr;
 }

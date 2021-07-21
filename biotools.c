@@ -42,5 +42,12 @@ int main(int argc, char *argv[]){
     
     printf("T>3:\t%lu\n", repcount(s_ptr, 'T', 3U));                        /* count number of times in which T is repeated more than 3 times */
     
+    OCC **fptr;
+    fptr = findocc(s_ptr, "ATG");
+    
+    int i;
+    for(i = 0; *(fptr+i) != NULL; i++)
+        printf("(%d) found occurrence of '%s' at %lu\n", i, "ATG", (*(fptr+i))->strpos);
+        
     return 0;
 }
