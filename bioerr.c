@@ -7,7 +7,12 @@
 
 #include "bioerr.h"
 
-void raise_error(char *msg){
-    fprintf(stderr, "error: %s\n", msg);
+void raise_error(char *msg, ...){
+    va_list args;
+    
+    fprintf(stderr, "error: ");
+    vfprintf(stderr, msg, args);
+    fprintf(stderr, "\n");
+    va_end(args);
     exit(1);
 }

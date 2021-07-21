@@ -8,8 +8,10 @@
 #ifndef bioerr_h
 #define bioerr_h
 
-#include <stdio.h>                      /* for exit(int) */
+#include <stdlib.h>                      /* for exit(int) */
+#include <stdio.h>
+#include <stdarg.h>
 
-void raise_error(char *msg);
+void raise_error(char *msg, ...);
 
 #endif /* bioerr_h */

@@ -12,7 +12,7 @@
 #include "biotypes.h"
 #include "biostr.h"
 
-SEQ *alloc_sequence(SEQ *);
+SEQ *alloc_sequence(void);
 char *alloc_chararray(unsigned);
 char *realloc_chararray(char *, unsigned long);
 

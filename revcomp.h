@@ -13,6 +13,7 @@
 #include "biotypes.h"
 #include "bioconst.h"
 #include "bioerr.h"
+#include "allocator.h"
 
 SEQ *revcomp(SEQ *);
 
