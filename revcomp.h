@@ -9,8 +9,10 @@
 #define revcomp_h
 
 #include <string.h>
+#include <ctype.h>
 #include "biotypes.h"
 #include "bioconst.h"
+#include "bioerr.h"
 
 SEQ *revcomp(SEQ *);
 

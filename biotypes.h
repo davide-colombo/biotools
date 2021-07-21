@@ -9,12 +9,14 @@
 #define biotypes_h
 
 /* a structure that define a FASTA sequence object */
+
 typedef struct seq {
     char *name;
     char *seq;
 } SEQ;
 
 /* a structure that defines some useful flags */
+
 typedef struct flag {
     unsigned int eof : 1;
 } FLAG;

@@ -8,34 +8,35 @@
 #include <stdio.h>
 #include "biotools.h"
 
-FLAG ctrl;                      /* define a FLAG variable for */
-
 int main(int argc, char *argv[]){
     
     FILE *fp;
     
-    if(argc != 2){
-        fprintf(stderr, "Usage: prog FASTA\n");
-        return 1;
-    }else{
-        if((fp = fopen(argv[1], "r")) == NULL){
-            fprintf(stderr, "error in biotools.c: can't open file at '%s'\n", argv[1]);
-            return 2;
-        }
-    }
+    if(argc != 2)                                                           /* check correct usage */
+        raise_error("main() detect wrong usage. Usage: prog fn\n");
+    if((fp = fopen(argv[1], "r")) == NULL)                                  /* try to open the file */
+        raise_error("main() can't open file at '%s'\n", argv[1]);
     
-    SEQ *s_ptr = NULL;                                      /* pointer to a new sequence */
+    SEQ *s_ptr;
+    s_ptr = getseq(fp);                                                     /* read sequence */
     
-    if((s_ptr = getsequence(s_ptr, fp)) == NULL){
-        fprintf(stderr, "error in biotools.c: can't read sequence\n");
-        return 3;
-    }
+    printf("%s\n", s_ptr->seq);
     
     return 0;
 }
 
 
 
+
+
+
+
+
+
+
+
+
+/*
 SEQ *transcript(SEQ *s_ptr){
     int c;
     while((c = *s_ptr->seq) == ' ' || c == '\t')
@@ -58,6 +59,7 @@ SEQ *transcript(SEQ *s_ptr){
     strcpy(mrna->seq, ptr);
     strcpy(mrna->name, s_ptr->name);
     
-    free((void *)ptr);                                      /* frees memory used to store the string */
+    free((void *)ptr);
     return mrna;
 }
+ */

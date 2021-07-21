@@ -19,7 +19,7 @@ char *realloc_chararray(char *s, unsigned long size){
     char *ptr;
     if((ptr = alloc_chararray(size)) == NULL)
         return NULL;
-    strcpy_from(ptr, s, 0);                                     /* save the content of 's' in 'ptr' */
+    strcpy_from(ptr, s, 0);                                     /* save the content of 's' in 'ptr' starting at 0*/
     free((void *)s);                                            /* free the previous content of the array */
     return ptr;
 }
