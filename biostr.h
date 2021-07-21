@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "biovar.h"
 extern FLAG ctrl;
 
 unsigned fgetline(FILE *, char *, unsigned long);

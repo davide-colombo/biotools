@@ -15,6 +15,7 @@
 #include "biostr.h"
 #include "allocator.h"
 
+#include "biovar.h"
 extern FLAG ctrl;
 
 SEQ *getseq(FILE *);
