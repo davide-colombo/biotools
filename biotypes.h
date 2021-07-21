@@ -21,4 +21,8 @@ typedef struct flag {
     unsigned int eof : 1;
 } FLAG;
 
+/* define a type for statistical values */
+
+typedef unsigned long STAT_T;
+
 #endif /* biotypes_h */

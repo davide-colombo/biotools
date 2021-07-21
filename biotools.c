@@ -32,11 +32,11 @@ int main(int argc, char *argv[]){
     printf("name:\t%s\n", t_ptr->name);
     printf("mRNA:\t%s\n", t_ptr->seq);
     
-    unsigned long cnt;
+    STAT_T cnt;
     cnt = scount(s_ptr, "ATG");                                             /* count 'ATG' occurrences in sequence */
     printf("cnt:\t%lu\n", cnt);
     
-    printf("genelen:\t%lu\n", genelen(s_ptr));                              /* get gene length */
+    printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     
     return 0;
 }
