@@ -37,6 +37,8 @@ void reverse(char *s){
         c = s[i], s[i] = s[j], s[j] = c;
 }
 
+/* function that searches occurrences of 'p' within 's' starting from 'start' and communicate end to the caller by setting 'ctrl.eof' to 1 */
+
 unsigned sfind(char *s, char *p, unsigned start){
     
     int i, j;
@@ -53,6 +55,9 @@ unsigned sfind(char *s, char *p, unsigned start){
     
     return NOTFOUND;
 }
+
+/* function that searcher occurrences of 'c' at least as long as 'minlen' within 's' starting from 'start'.
+   Also, stores the length of the current repeated sequence in 'len' and communicate end to the calles by setting 'ctrl.eof' to 1 */
 
 unsigned repfind(char *s, char c, unsigned minlen, unsigned start, STAT_T *len){
     

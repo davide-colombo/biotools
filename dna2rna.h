@@ -15,6 +15,6 @@
 #include "bioerr.h"
 #include "allocator.h"
 
-SEQ *transcript(SEQ *);
+SEQ *transcript(SEQ *s_ptr);                    /* transcription process applied to 's_ptr->seq' */
 
 #endif /* dna2rna_h */

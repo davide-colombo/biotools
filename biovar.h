@@ -10,6 +10,6 @@
 
 #include "biotypes.h"
 
-FLAG ctrl;                      /* FLAG variable used to control the flow when reading a file */
+FLAG ctrl;      /* FLAG variable used by the callee to communicate to the caller that a given condition has been reached */
 
 #endif /* biovar_h */

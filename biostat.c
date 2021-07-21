@@ -7,6 +7,7 @@
 
 #include "biostat.h"
 
+/* function that return the number of occurrences of the string 's' within another the 'SEQ' string */
 
 STAT_T scount(SEQ *s_ptr, char *s){
     
@@ -26,6 +27,8 @@ STAT_T scount(SEQ *s_ptr, char *s){
     return cnt;
 }
 
+/* function that return the number of sequential occurrences of a the character 'c' that are at least equal to or longer than 'minlen' */
+
 STAT_T repcount(SEQ *s_ptr, char c, unsigned minlen){
     
     char *ptr;
@@ -42,9 +45,13 @@ STAT_T repcount(SEQ *s_ptr, char c, unsigned minlen){
     return cnt;
 }
 
+/* function that return the length of a sequence */
+
 STAT_T genelen(SEQ *s_ptr){
     return strlen(s_ptr->seq);
 }
+
+/* funtion that return the percentage amount of GC base within the SEQ object, computed as G+C / (A+G+C+T) */
 
 double gcperc(SEQ *s_ptr){
     

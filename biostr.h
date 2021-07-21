@@ -16,10 +16,10 @@
 #include "biovar.h"
 extern FLAG ctrl;
 
-unsigned fgetline(FILE *, char *, unsigned long);
+unsigned fgetline(FILE *fp, char *line, unsigned long lim);
 void strcpy_from(char *to, char *from, unsigned start);
-void reverse(char *);
-unsigned sfind(char *, char *, unsigned);
-unsigned repfind(char *, char, unsigned, unsigned, STAT_T *);
+void reverse(char *s);
+unsigned sfind(char *tosearch, char *tofind, unsigned startpos);
+unsigned repfind(char *tosearch, char tofind, unsigned minlen, unsigned startpos, STAT_T *actlen);
 
 #endif /* biostr_h */
