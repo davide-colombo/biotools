@@ -18,3 +18,5 @@ The other files are:
 - getseq.h,     define a function for creating a SEQ object from a FILE;
 
 Each file is isolated, in this way you can take one script and include within your personal project without troubles.
+
+If you want to try, 'biotools.c' contains a simple implementation example.
