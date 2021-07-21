@@ -32,5 +32,9 @@ int main(int argc, char *argv[]){
     printf("name:\t%s\n", t_ptr->name);
     printf("mRNA:\t%s\n", t_ptr->seq);
     
+    int cnt;
+    cnt = scount(s_ptr, "ATG");
+    printf("cnt:\t%d\n", cnt);
+    
     return 0;
 }

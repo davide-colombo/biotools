@@ -36,5 +36,6 @@ SEQ *getseq(FILE *fp){
             break;
     }
     
+    ctrl.eof = 0;                                                           /* initialize global variable after its use */
     return s_ptr;
 }

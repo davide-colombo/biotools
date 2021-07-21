@@ -16,6 +16,7 @@
 #include "revcomp.h"                    /* define function for computing the reverse complement of a SEQ object */
 #include "getseq.h"                     /* define function for creating a SEQ object from a FILE object */
 #include "dna2rna.h"                    /* define function for converting DNA seq into RNA seq */
+#include "biostat.h"
 
 
 #endif /* biotools_h */

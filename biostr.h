@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "bioconst.h"
 
 #include "biovar.h"
 extern FLAG ctrl;
@@ -17,5 +18,6 @@ extern FLAG ctrl;
 unsigned fgetline(FILE *, char *, unsigned long);
 void strcpy_from(char *to, char *from, unsigned start);
 void reverse(char *);
+unsigned sfind(char *, char *, unsigned);
 
 #endif /* biostr_h */

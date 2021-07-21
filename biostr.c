@@ -36,3 +36,20 @@ void reverse(char *s){
     for(i = 0, j = strlen(s)-1; i < j; i++, j--)
         c = s[i], s[i] = s[j], s[j] = c;
 }
+
+unsigned sfind(char *s, char *p, unsigned start){
+    
+    int i, j;
+    for(i = start; s[i]; i++)
+        if(s[i] == p[0]){
+            for(j = 0; (s[i] == p[j]) && p[j]; i++, j++)
+                ;
+            if(!p[j])
+                return i-j;
+        }
+    
+    if(s[i] == '\0')                                /* this tells the caller that the string 's' has been completely scanned */
+        ctrl.eof = 1;
+    
+    return NOTFOUND;
+}
