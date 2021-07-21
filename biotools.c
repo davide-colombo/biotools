@@ -8,11 +8,15 @@
 #include <stdio.h>
 #include "biotools.h"
 
-char *alloc_chararray(unsigned);
 void reverse(char *);
-void __strcpy(char *, char *);
+void __strcpy(char *, char *, unsigned);
 char *__realloc(char *, unsigned long);
-SEQ *alloc_sequence(void);                              /* OK */
+
+SEQ *alloc_sequence(void);
+char *alloc_chararray(unsigned);
+int fgetline(FILE *, char *, unsigned long);
+
+FLAG ctrl;
 
 int main(int argc, char *argv[]){
     
@@ -28,16 +32,17 @@ int main(int argc, char *argv[]){
         }
     }
     
-    SEQ *s_ptr = NULL;                                            /* pointer to a new sequence */
+    SEQ *s_ptr = NULL;                                      /* pointer to a new sequence */
     
-    if(getsequence(s_ptr, fp) == NULL){
+    if((s_ptr = getsequence(s_ptr, fp)) == NULL){
         fprintf(stderr, "error in biotools.c: can't read sequence\n");
         return 3;
     }
     
-    printf("back to the main\n");
-    // printf("%s\n", s_ptr->seq);
-    
+    /*
+    printf("%s\n", s_ptr->seq);
+    printf("name: %s\n", s_ptr->name);
+    */
     
     /*
     _DNA_ dna = "GAGTAGTCCCTTCGCAAGCCC";
@@ -55,36 +60,52 @@ int main(int argc, char *argv[]){
     printf("DNA\t%s\n", dna);
     printf("RNA\t%s\n", mrna);
      
-     */
-    
+    */
     return 0;
 }
 
 SEQ *getsequence(SEQ *s_ptr, FILE *fp){
     
     if(s_ptr == NULL){
-        s_ptr = alloc_sequence();
-        s_ptr->seq = NULL;
-        s_ptr->name = NULL;
+        if((s_ptr = alloc_sequence()) == NULL){
+            fprintf(stderr, "error in getsequence: can't alloc memory for SEQ *\n");
+            return NULL;
+        }
+        
+        if((s_ptr->seq = alloc_chararray(DEFAULT_SIZE)) == NULL){
+            fprintf(stderr, "error in getsequence: can't alloc memory for sequence char array\n");
+            return NULL;
+        }
+        
+        if((s_ptr->name = alloc_chararray(DEFAULT_SIZE)) == NULL){
+            fprintf(stderr, "error in getsequence: can't alloc memory for name char array\n");
+            return NULL;
+        }
     }
     
     unsigned long size = DEFAULT_SIZE;
-    char *temp = alloc_chararray(size);
+    char line[DEFAULT_SIZE];
     
-    int c, i;
-    for(i = 0; (c = getc(fp)) != EOF; i++){
-        if(i >= size){
-            //temp[size] = '\0';
-            if((temp = __realloc(temp, size+=1000)) == NULL)
-                return NULL;
-        }
-       temp[i] = c;
+    if(fgetline(fp, line, DEFAULT_SIZE) <= 0){
+        fprintf(stderr, "error in getsequence: can't read the first line of the file\n");
+        return NULL;
     }
-    printf("%s\n", temp);
-    printf("i = %d\n", i);
-    printf("out\n");
-    printf("strlen = %lu\n", strlen(temp));
-    temp[i] = '\0';
+    
+    strcpy(s_ptr->name, line);                          /* the library function copies the '\0' too */
+    
+    int i, len;
+    for(i = 0; (len = fgetline(fp, line, DEFAULT_SIZE)) > 0; i += len){
+        if((i+len) >= size)
+            if((s_ptr->seq = __realloc(s_ptr->seq, size+=1000)) == NULL){
+                fprintf(stderr, "error in getsequence: can't re-alloc memory with size %lu\n", size);
+                return NULL;
+            }
+        __strcpy(s_ptr->seq, line, i);
+        
+        if(ctrl.eof)            /* this control terminate the loop: it must be done after the copy otherwise the last line is not copied */
+            break;
+    }
+    
     return s_ptr;
 }
 
@@ -137,13 +158,12 @@ SEQ *transcript(SEQ *s_ptr){
     strcpy(mrna->seq, ptr);
     strcpy(mrna->name, s_ptr->name);
     
-    free((void *)ptr);                      /* frees memory used to store the string */
-    
+    free((void *)ptr);                                      /* frees memory used to store the string */
     return mrna;
 }
 
 char *alloc_chararray(unsigned size){
-    return (char *)malloc(sizeof(char) * (size + 1));       /* +1 for '\0' */
+    return (char *)malloc(sizeof(char) * (size+1));         /* +1 for '\0' */
 }
 
 void reverse(char *s){
@@ -152,21 +172,35 @@ void reverse(char *s){
         c = s[i], s[i] = s[j], s[j] = c;
 }
 
-char *__realloc(char *s, unsigned long sz){
+char *__realloc(char *s, unsigned long size){
     char *ptr;
-    if((ptr = (char *)malloc(sizeof(char) * sz)) == NULL)
+    if((ptr = alloc_chararray(size)) == NULL)
         return NULL;
-    __strcpy(ptr, s);                       /* save the content of 's' in 'ptr' */
-    free((void *)s);                        /* free the previous content of the array */
+    __strcpy(ptr, s, 0);                                    /* save the content of 's' in 'ptr' */
+    free((void *)s);                                        /* free the previous content of the array */
     return ptr;
 }
 
-void __strcpy(char *to, char *from){
-    int i;
-    for(i = 0; from[i]; i++)                /* loops and copy until reaches a null character */
-        to[i] = from[i];
+void __strcpy(char *to, char *from, unsigned start){
+    int i, j;
+    for(i = start, j = 0; from[j]; i++, j++)                /* loops and copy until reaches a null character */
+        to[i] = from[j];
 }
 
 SEQ *alloc_sequence(void){
     return (SEQ *)malloc(sizeof(SEQ));
+}
+
+int fgetline(FILE *fp, char *s, unsigned long lim){
+    extern FLAG ctrl;
+    
+    int c, i;
+    for(i = 0; lim-- > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
+        s[i] = c;
+    s[i] = '\0';
+    
+    if(c == EOF)
+        ctrl.eof = 1;
+    
+    return i;
 }

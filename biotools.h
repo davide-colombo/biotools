@@ -21,6 +21,10 @@ typedef struct dna {
     char *seq;
 } SEQ;
 
+typedef struct flag {
+    unsigned int eof : 1;
+} FLAG;
+
 SEQ *rev_complement(SEQ *);             /* take a sequence and return the reverse complement of that sequence */
 SEQ *getsequence(SEQ *, FILE *);        /* read the FILE and return a new sequence */
 SEQ *transcript(SEQ *);                 /* take a DNA sequence and return an RNA sequence */
