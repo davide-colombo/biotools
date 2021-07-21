@@ -40,5 +40,7 @@ int main(int argc, char *argv[]){
     
     printf("gc%%:\t%.4g\n", gcperc(s_ptr));                                 /* gc percentage */
     
+    printf("T>3:\t%lu\n", repcount(s_ptr, 'T', 3U));                        /* count number of times in which T is repeated more than 3 times */
+    
     return 0;
 }

@@ -17,6 +17,7 @@
 FLAG ctrl;
 
 STAT_T scount(SEQ *, char *);
+STAT_T repcount(SEQ *, char, unsigned);
 STAT_T genelen(SEQ *);
 double gcperc(SEQ *);
 

@@ -53,3 +53,22 @@ unsigned sfind(char *s, char *p, unsigned start){
     
     return NOTFOUND;
 }
+
+unsigned repfind(char *s, char c, unsigned minlen, unsigned start, STAT_T *len){
+    
+    int i, j;
+    for(i = start; s[i]; i++)
+        if(s[i] == c){
+            for(j = 0; s[i] == c; i++, j++)
+                ;
+            if(j >= minlen){
+                *len = j;
+                return i-j;
+            }
+        }
+    
+    if(s[i] == '\0')                            /* tell the caller that the string has been completely scanned */
+        ctrl.eof = 1;
+        
+    return NOTFOUND;
+}
