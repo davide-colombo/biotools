@@ -15,8 +15,7 @@
 #include "allocator.h"                  /* define functions for handling dynamically allocation of the memory */
 #include "revcomp.h"                    /* define function for computing the reverse complement of a SEQ object */
 #include "getseq.h"                     /* define function for creating a SEQ object from a FILE object */
+#include "dna2rna.h"                    /* define function for converting DNA seq into RNA seq */
 
-
-SEQ *transcript(SEQ *);                 /* take a DNA sequence and return an RNA sequence */
 
 #endif /* biotools_h */

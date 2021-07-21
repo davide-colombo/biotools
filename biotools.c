@@ -19,47 +19,18 @@ int main(int argc, char *argv[]){
     
     SEQ *s_ptr;
     s_ptr = getseq(fp);                                                     /* read sequence */
+    printf("name:\t%s\n", s_ptr->name);
+    printf("string:\t%s\n", s_ptr->seq);
     
-    printf("%s\n", s_ptr->seq);
+    SEQ *r_ptr;
+    r_ptr = revcomp(s_ptr);                                                 /* reverse complement */
+    printf("name:\t%s\n", r_ptr->name);
+    printf("revcom:\t%s\n", r_ptr->seq);
+    
+    SEQ *t_ptr;
+    t_ptr = transcript(s_ptr);
+    printf("name:\t%s\n", t_ptr->name);
+    printf("mRNA:\t%s\n", t_ptr->seq);
     
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-SEQ *transcript(SEQ *s_ptr){
-    int c;
-    while((c = *s_ptr->seq) == ' ' || c == '\t')
-        ;
-    
-    char *ptr;
-    if((ptr = alloc_chararray(strlen(s_ptr->seq)+1)) == NULL)
-        return NULL;
-    
-    int i;
-    char *s;
-    s = s_ptr->seq;
-    for(i = 0; isalpha(s[i]); i++)
-        ptr[i] = (s[i] == 'T' || s[i] == 't') ? s[i]+1 : s[i];
-    ptr[i] = '\0';
-    
-    SEQ *mrna;
-    if((mrna = alloc_sequence()) == NULL)
-        return NULL;
-    strcpy(mrna->seq, ptr);
-    strcpy(mrna->name, s_ptr->name);
-    
-    free((void *)ptr);
-    return mrna;
-}
- */
