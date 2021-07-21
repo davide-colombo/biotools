@@ -34,50 +34,7 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-SEQ *getsequence(SEQ *s_ptr, FILE *fp){
-    
-    if(s_ptr == NULL){
-        if((s_ptr = alloc_sequence()) == NULL){
-            fprintf(stderr, "error in getsequence: can't alloc memory for SEQ *\n");
-            return NULL;
-        }
-        
-        if((s_ptr->seq = alloc_chararray(DEFAULT_SIZE)) == NULL){
-            fprintf(stderr, "error in getsequence: can't alloc memory for sequence char array\n");
-            return NULL;
-        }
-        
-        if((s_ptr->name = alloc_chararray(DEFAULT_SIZE)) == NULL){
-            fprintf(stderr, "error in getsequence: can't alloc memory for name char array\n");
-            return NULL;
-        }
-    }
-    
-    unsigned long size = DEFAULT_SIZE;
-    char line[DEFAULT_SIZE];
-    
-    if(fgetline(fp, line, DEFAULT_SIZE) <= 0){
-        fprintf(stderr, "error in getsequence: can't read the first line of the file\n");
-        return NULL;
-    }
-    
-    strcpy(s_ptr->name, line);                          /* the library function copies the '\0' too */
-    
-    int i, len;
-    for(i = 0; (len = fgetline(fp, line, DEFAULT_SIZE)) > 0; i += len){
-        if((i+len) >= size)
-            if((s_ptr->seq = __realloc(s_ptr->seq, size+=1000)) == NULL){
-                fprintf(stderr, "error in getsequence: can't re-alloc memory with size %lu\n", size);
-                return NULL;
-            }
-        __strcpy(s_ptr->seq, line, i);
-        
-        if(ctrl.eof)            /* this control terminate the loop: it must be done after the copy otherwise the last line is not copied */
-            break;
-    }
-    
-    return s_ptr;
-}
+
 
 SEQ *transcript(SEQ *s_ptr){
     int c;

@@ -10,10 +10,9 @@
 /* a function that return the length of the line read and sets the external FLAG when the last line is read */
 
 unsigned fgetline(FILE *fp, char *s, unsigned long lim){
-    extern FLAG ctrl;       // TODO: define this variable somewhere
-    
-    int c, i;
-    for(i = 0; lim-- > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
+
+    int i, c;
+    for(i = 0; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
         s[i] = c;
     s[i] = '\0';
     
