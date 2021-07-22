@@ -32,15 +32,9 @@ int main(int argc, char *argv[]){
     printf("name:\t%s\n", t_ptr->name);
     printf("mRNA:\t%s\n", t_ptr->seq);
     
-    STAT_T cnt;
-    cnt = scount(s_ptr, "ATG");                                             /* count 'ATG' occurrences in sequence */
-    printf("cnt:\t%lu\n", cnt);
-    
     printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     
     printf("gc%%:\t%.4g\n", gcperc(s_ptr));                                 /* gc percentage */
-    
-    printf("T>3:\t%lu\n", repcount(s_ptr, 'T', 3U));                        /* count number of times in which T is repeated more than 3 times */
     
     SRCH_T *targ;
     if((targ = alloc_srch()) == NULL)
@@ -50,12 +44,13 @@ int main(int argc, char *argv[]){
     
     OCC **fptr;
     unsigned long nocc;
-    fptr = findocc1(&nocc, s_ptr, targ);
+    fptr = findocc(&nocc, s_ptr, targ);                                     /* find occurrences and get the count */
     
     int i;
-    for(i = 0; *(fptr+i) != NULL; i++)
+    for(i = 0; *(fptr+i) != NULL; i++)                                      /* printt OCC array */
         printf("(%d) found occurrence of '%s' at %lu\n", i, "ATG", (*(fptr+i))->fpos);
         
     printf("nocc:\t%lu\n", nocc);
+    
     return 0;
 }

@@ -18,12 +18,8 @@
 #include "biovar.h"
 FLAG ctrl;
 
-STAT_T scount(SEQ *s_ptr, char *tofind);                                /* search occurrences of 's' within 's_ptr->seq' */
-STAT_T repcount(SEQ *s_ptr, char c, unsigned minlen);                   /* search occurrences of 'c' at least as long as minlen in 's_ptr->seq' */
 STAT_T genelen(SEQ *s_ptr);                                             /* return strlen of 's_ptr->seq' */
 double gcperc(SEQ *s_ptr);                                              /* return 'G+C / (A+C+G+T)' */
-OCC **findocc(SEQ *s_ptr, char *tofind);                                /* return array of pointers to OCC objects */
-
-OCC **findocc1(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ);
+OCC **findocc(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ);
 
 #endif /* biostat_h */
