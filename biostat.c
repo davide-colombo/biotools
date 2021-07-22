@@ -5,7 +5,6 @@
 //  Created by Davide Colombo on 21/07/21.
 //
 
-#include <stdio.h>
 #include "biostat.h"
 
 /* function that return the length of a sequence */
@@ -49,7 +48,8 @@ OCC **findocc(LEN_T *cnt, SEQ *s_ptr, SRCH_T *targ){
     for(i = 0; !ctrl.eof; i = (fpos + targ->curlen)){
         if((fpos = sfind(ptr, targ, i)) >= 0 && fpos <= strlen(ptr)){                      /* found occurrences */
             if(nocc >= size){
-                // TODO: realloc array of pointers
+                printf("you must realloc array of pointer\n");
+                break;
             }
             
             if((o_ptr = alloc_occ()) == NULL)
