@@ -7,6 +7,19 @@
 
 #include "allocator.h"
 
+/* this function acts like an OOP constructor */
+
+SRCH_T *srch_t(char *s, LEN_T min, LEN_T max){
+    SRCH_T *ptr;
+    if((ptr = alloc_srch()) == NULL)
+        return NULL;
+    ptr->str = alloc_chararray(strlen(s));              /* this function allocate a space equal to the size passed + 1 */
+    strcpy(ptr->str, s);
+    ptr->minlen = min;
+    ptr->maxlen = max;
+    return ptr;
+}
+
 SRCH_T *alloc_srch(void){
     return (SRCH_T *)malloc(sizeof(SRCH_T));
 }

@@ -32,36 +32,37 @@ double gcperc(SEQ *s_ptr){
 
 OCC **findocc(LEN_T *cnt, SEQ *s_ptr, SRCH_T *targ){
     
-    LEN_T size = INITSIZE;
+    *cnt = 0;                                                           /* initialize FOR SAFETY the counter to 0 */
+    LEN_T size = INITSIZE;                                              /* initialize the size variable to INITSIZE symbolic constant */
     
-    char *ptr;
+    char *ptr;                                                          /* define pointer to char to improve code readability */
     ptr = s_ptr->seq;
     
-    OCC **fptr;
-    LEN_T nocc;
-    OCC *o_ptr;
+    OCC **fptr;                                                         /* array of pointers to 'OCC *' objects */
+    OCC *o_ptr;                                                         /* pointer to 'OCC' object */
     
     if((fptr = alloc_occptr_arr(size)) == NULL)
-        raise_error("findocc1() can't alloc memory for array of pointers to OCC objects\n");
+        raise_error("findocc1() can't alloc memory for \
+                    array of pointers to OCC objects\n");
     
     FPOS_T i, fpos;
-    for(i = 0; !ctrl.eof; i = (fpos + targ->curlen)){
-        if((fpos = sfind(ptr, targ, i)) >= 0 && fpos <= strlen(ptr)){                      /* found occurrences */
-            if(nocc >= size){
+    for(i = 0; !ctrl.eof; i = (fpos + targ->curlen)){                   /* the loop ENDs when 'sfind()' sets the ctrl.eof flag to 1 */
+        if((fpos = sfind(ptr, targ, i)) >= 0 && fpos <= strlen(ptr)){
+            if(*cnt >= size){
                 printf("you must realloc array of pointer\n");
                 break;
             }
             
-            if((o_ptr = alloc_occ()) == NULL)
-                raise_error("findocc1() can't alloc memory for OCC object\n");
+            if((o_ptr = alloc_occ()) == NULL)                           /* alloc memory for a single OCC object */
+                raise_error("findocc1() can't alloc memory\
+                            for OCC object\n");
             o_ptr->fpos = fpos;
             o_ptr->flen = targ->curlen;
-            fptr[nocc++] = o_ptr;
+            fptr[(*cnt)++] = o_ptr;
         }
     }
     
-    fptr[nocc] = NULL;                                                  /* set the end of the array */
-    *cnt = nocc;
+    fptr[*cnt] = NULL;                                                  /* set the end of the array */
     
     if(ctrl.eof)                                                        /* reset the global flag so that other subroutines can use it */
         ctrl.eof = 0;

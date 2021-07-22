@@ -34,26 +34,41 @@ int main(int argc, char *argv[]){
     
     printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     
-    printf("gc%%:\t%.4g\n", gcperc(s_ptr));                                 /* gc percentage */
+    printf("GC%%:\t%.4g\n", gcperc(s_ptr));                                 /* gc percentage */
     
+/* ================================================ search a plain text sequence ================================================ */
     
-    
+    char tosearch[] = "ATG";                                                /* string to search within SEQ->str sequence */
     SRCH_T *targ;
-    if((targ = alloc_srch()) == NULL)
-        raise_error("main() can't alloc memory for SRCH_T object\n");
-    targ->str = "T";
-    targ->minlen = 3UL;
-    targ->maxlen = UNSET;
+    targ = srch_t(tosearch, strlen(tosearch), strlen(tosearch));            /* minlen = maxlen = strlen() */
     
     OCC **fptr;
     LEN_T nocc;
     fptr = findocc(&nocc, s_ptr, targ);                                     /* find occurrences and get the count */
     
     LEN_T i;
-    for(i = 0; *(fptr+i) != NULL; i++)                                      /* printt OCC array */
-        printf("(%lu) found occurrence of '%s' at %lu\n", i, targ->str, (*(fptr+i))->fpos);
+    for(i = 0; i < nocc; i++)
+        printf("(%lu) found occurrence of '%s' at %lu\n",
+               i, targ->str, (*(fptr+i))->fpos);
         
     printf("nocc:\t%lu\n", nocc);
+    
+/* ================================================ search a repeated sequence ================================================ */
+    
+    char repseq[] = "T";
+    SRCH_T *reptarg;
+    reptarg = srch_t(repseq, 3UL, UNSET);                                   /* minlen = 3 and maxlen = UNSET */
+    
+    OCC **fptr1;
+    LEN_T nocc1;
+    
+    fptr1 = findocc(&nocc1, s_ptr, reptarg);
+    
+    for(i = 0; i < nocc1; i++)
+        printf("(%lu) found occurrence of '%s' at %lu\n",
+               i, reptarg->str, (*(fptr1+i))->fpos);
+        
+    printf("nocc1:\t%lu\n", nocc1);
     
     return 0;
 }
