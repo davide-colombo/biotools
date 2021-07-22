@@ -29,10 +29,16 @@ int main(int argc, char *argv[]){
     printf("name:\t%s\n", r_ptr->name);
     printf("revcom:\t%s\n", r_ptr->seq);
     
-    SEQ *t_ptr;
-    t_ptr = transcript(s_ptr);                                              /* compute transcription of gene sequence */
-    printf("name:\t%s\n", t_ptr->name);
-    printf("mRNA:\t%s\n", t_ptr->seq);
+/* ================================================ is valid cds? ================================================ */
+        
+    printf("cds:\t%s\n", (is_cds(s_ptr) == 1 ? "TRUE" : "FALSE"));
+    
+    if(is_cds(s_ptr)){                                                      /* transcript the SEQ only if is a valid CDS */
+        SEQ *t_ptr;
+        t_ptr = transcript(s_ptr);                                          /* compute transcription of gene sequence */
+        printf("name:\t%s\n", t_ptr->name);
+        printf("mRNA:\t%s\n", t_ptr->seq);
+    }
     
     printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     

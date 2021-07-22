@@ -7,6 +7,17 @@
 
 #include "biostr.h"
 
+char *strncpy_r(char *to, char *from, unsigned howmany){
+    FPOS_T strpos;
+    strpos = strlen(from)-howmany;
+    
+    FPOS_T i, j;
+    for(i = strpos, j = 0; (to[j] = from[i]); i++, j++)
+        ;
+    
+    return to;
+}
+
 /* a function that return the length of the line read and sets the external FLAG when the last line is read */
 
 LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
