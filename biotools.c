@@ -36,11 +36,14 @@ int main(int argc, char *argv[]){
     
     printf("gc%%:\t%.4g\n", gcperc(s_ptr));                                 /* gc percentage */
     
+    
+    
     SRCH_T *targ;
     if((targ = alloc_srch()) == NULL)
         raise_error("main() can't alloc memory for SRCH_T object\n");
-    targ->str = "ATG";
-    targ->minlen = targ->maxlen = strlen(targ->str);
+    targ->str = "T";
+    targ->minlen = 3UL;
+    targ->maxlen = UNSET;
     
     OCC **fptr;
     LEN_T nocc;
@@ -48,7 +51,7 @@ int main(int argc, char *argv[]){
     
     LEN_T i;
     for(i = 0; *(fptr+i) != NULL; i++)                                      /* printt OCC array */
-        printf("(%lu) found occurrence of '%s' at %lu\n", i, "ATG", (*(fptr+i))->fpos);
+        printf("(%lu) found occurrence of '%s' at %lu\n", i, targ->str, (*(fptr+i))->fpos);
         
     printf("nocc:\t%lu\n", nocc);
     

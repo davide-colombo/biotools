@@ -42,16 +42,23 @@ void reverse(char *s){
 
 FPOS_T sfind(char *targ, SRCH_T *pat, FPOS_T start){
     
+    int c;
     FPOS_T i, j;
     for(i = start; targ[i]; i++)
-        if(targ[i] == *pat->str){
-            for(j = 0; targ[i] == (pat->str)[j]; i++, j++)
-                ;
-            if((pat->maxlen == UNSET && j >= pat->minlen) || (pat->maxlen != UNSET && !(pat->str)[j])){
+        if(targ[i] == (c = *pat->str)){                                         /* MUST set 'c' here, otherwise it does not enter the loop */
+            for(j = 0; targ[i] == c; i++){
+                j++;
+                c = (pat->maxlen == UNSET) ? *pat->str : (pat->str)[j];         /* decice the char for testing the next condition */
+            }
+            
+            if((pat->maxlen == UNSET && j >= pat->minlen) ||
+               (pat->maxlen != UNSET && !(pat->str)[j])){
                 pat->curlen = j;
                 return i-j;
             }
         }
+    
+    /* outside the for-i loop */
     
     if(!ctrl.eof)
         ctrl.eof = 1;
