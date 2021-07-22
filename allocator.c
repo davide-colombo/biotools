@@ -20,12 +20,50 @@ SRCH_T *srch_t(char *s, LEN_T min, LEN_T max){
     return ptr;
 }
 
+void free_srch_t(SRCH_T *ptr){
+    if(ptr == NULL)
+        return;
+    
+    free((void *)ptr->str);                             /* first, let's free the char array that holds the string */
+    free((void *) ptr);                                 /* second, free the 'SRCH_T' object */
+}
+
 SRCH_T *alloc_srch(void){
     return (SRCH_T *)malloc(sizeof(SRCH_T));
 }
 
+/* ================================================================================================================================== */
+
 OCC **alloc_occptr_arr(LEN_T size){
     return (OCC **)malloc(sizeof(OCC *) * size);
+}
+
+void free_occptr_arr(OCC **ptr){
+    if(ptr == NULL)
+        return;
+    
+    LEN_T i;
+    for(i = 0; *(ptr+i) != NULL; i++)
+        free_occ(*(ptr+i));
+}
+
+/* ================================================================================================================================== */
+
+/* a function-like an OOP constructor */
+
+OCC *occ(FPOS_T fpos, FPOS_T flen){
+    OCC *ptr;
+    if((ptr = alloc_occ()) == NULL)
+        return NULL;
+    ptr->fpos = fpos;
+    ptr->flen = flen;
+    return ptr;
+}
+
+void free_occ(OCC *ptr){
+    if(ptr == NULL)
+        return;
+    free((void *)ptr);
 }
 
 OCC *alloc_occ(void){
@@ -48,3 +86,4 @@ char *realloc_chararray(char *s, LEN_T size){
     free((void *)s);                                            /* free the previous content of the array */
     return ptr;
 }
+

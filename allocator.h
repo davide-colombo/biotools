@@ -14,9 +14,16 @@
 #include "biostr.h"
 
 SRCH_T *srch_t(char *s, LEN_T min, LEN_T max);
+void free_srch_t(SRCH_T *ptr);
 SRCH_T *alloc_srch(void);
+
 OCC **alloc_occptr_arr(LEN_T size);
+void free_occptr_arr(OCC **tofree);
+
+OCC *occ(FPOS_T fpos, FPOS_T flen);
+void free_occ(OCC *ptr);
 OCC *alloc_occ(void);
+
 SEQ *alloc_sequence(void);
 char *alloc_chararray(LEN_T size);
 char *realloc_chararray(char *, LEN_T size);

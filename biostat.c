@@ -53,11 +53,9 @@ OCC **findocc(LEN_T *cnt, SEQ *s_ptr, SRCH_T *targ){
                 break;
             }
             
-            if((o_ptr = alloc_occ()) == NULL)                           /* alloc memory for a single OCC object */
+            if((o_ptr = occ(fpos, targ->curlen)) == NULL)                           /* alloc memory for a single OCC object */
                 raise_error("findocc1() can't alloc memory\
                             for OCC object\n");
-            o_ptr->fpos = fpos;
-            o_ptr->flen = targ->curlen;
             fptr[(*cnt)++] = o_ptr;
         }
     }

@@ -55,20 +55,19 @@ int main(int argc, char *argv[]){
     
 /* ================================================ search a repeated sequence ================================================ */
     
+    free_srch_t(targ);
+    
+    free_occptr_arr(fptr);
+    
     char repseq[] = "T";
-    SRCH_T *reptarg;
-    reptarg = srch_t(repseq, 3UL, UNSET);                                   /* minlen = 3 and maxlen = UNSET */
+    targ = srch_t(repseq, 3UL, UNSET);
+    fptr = findocc(&nocc, s_ptr, targ);
     
-    OCC **fptr1;
-    LEN_T nocc1;
-    
-    fptr1 = findocc(&nocc1, s_ptr, reptarg);
-    
-    for(i = 0; i < nocc1; i++)
+    for(i = 0; i < nocc; i++)
         printf("(%lu) found occurrence of '%s' at %lu\n",
-               i, reptarg->str, (*(fptr1+i))->fpos);
+               i, targ->str, (*(fptr+i))->fpos);
         
-    printf("nocc1:\t%lu\n", nocc1);
+    printf("nocc1:\t%lu\n", nocc);
     
     return 0;
 }
