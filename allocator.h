@@ -12,6 +12,7 @@
 #include "biotypes.h"
 #include "biostr.h"
 
+SRCH_T *alloc_srch(void);
 OCC **alloc_occptr_arr(unsigned size);
 OCC *alloc_occ(void);
 SEQ *alloc_sequence(void);

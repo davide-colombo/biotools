@@ -7,6 +7,10 @@
 
 #include "allocator.h"
 
+SRCH_T *alloc_srch(void){
+    return (SRCH_T *)malloc(sizeof(SRCH_T));
+}
+
 OCC **alloc_occptr_arr(unsigned size){
     return (OCC **)malloc(sizeof(OCC *) * size);
 }

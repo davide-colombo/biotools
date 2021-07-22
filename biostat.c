@@ -68,6 +68,8 @@ double gcperc(SEQ *s_ptr){
     return gc / i;
 }
 
+/* function that do the same job as 'scount()' above but instead of simply return the number of matches, return 'OCC *[]' */
+
 OCC **findocc(SEQ *s_ptr, char *s){
     
     unsigned long size = INITSIZE;
@@ -79,7 +81,8 @@ OCC **findocc(SEQ *s_ptr, char *s){
     char *ptr;                                                  /* define a pointer to char for increase code readability */
     ptr = s_ptr->seq;
     
-    fptr = alloc_occptr_arr(size);                              /* alloc memory for array of pointers to OCC objects */
+    if((fptr = alloc_occptr_arr(size)) == NULL)                 /* alloc memory for array of pointers to OCC objects */
+        raise_error("findocc() can't alloc memory for array of pointers to OCC objects\n");
     
     STAT_T fpos;                                                /* position of the match within string pointed by ptr */
     int i;
@@ -100,6 +103,43 @@ OCC **findocc(SEQ *s_ptr, char *s){
     fptr[nocc] = NULL;                                          /* stop the searching when printing */
     
     if(ctrl.eof)                                                /* reset the flag used by the callee to signal the end of the string to be scanned */
+        ctrl.eof = 0;
+    
+    return fptr;
+}
+
+OCC **findocc1(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ){
+    
+    unsigned long size = INITSIZE;
+    
+    char *ptr;
+    ptr = s_ptr->seq;
+    
+    OCC **fptr;
+    int nocc;
+    OCC *o_ptr;
+    
+    if((fptr = alloc_occptr_arr(size)) == NULL)
+        raise_error("findocc1() can't alloc memory for array of pointers to OCC objects\n");
+
+    int i;
+    for(i = 0; !ctrl.eof; i = (targ->strpos + targ->curlen)){
+        *cnt = sfind1(ptr, targ, i);                            /* found occurrences */
+        
+        if(nocc >= size){
+            // TODO: realloc array of pointers
+        }
+        
+        if((o_ptr = alloc_occ()) == NULL)
+            raise_error("findocc1() can't alloc memory for OCC object\n");
+        o_ptr->fpos = targ->strpos;
+        o_ptr->flen = targ->curlen;
+        fptr[nocc++] = o_ptr;
+    }
+        
+    fptr[nocc] = NULL;                                          /* set the end of the array */
+    
+    if(ctrl.eof)                                                /* reset the global flag so that other subroutines can use it */
         ctrl.eof = 0;
     
     return fptr;

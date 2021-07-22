@@ -22,4 +22,7 @@ void reverse(char *s);
 unsigned sfind(char *tosearch, char *tofind, unsigned startpos);
 unsigned repfind(char *tosearch, char tofind, unsigned minlen, unsigned startpos, STAT_T *actlen);
 
+
+unsigned long sfind1(char *targ, SRCH_T *pat, unsigned long start);
+
 #endif /* biostr_h */

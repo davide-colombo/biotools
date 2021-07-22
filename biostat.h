@@ -24,5 +24,6 @@ STAT_T genelen(SEQ *s_ptr);                                             /* retur
 double gcperc(SEQ *s_ptr);                                              /* return 'G+C / (A+C+G+T)' */
 OCC **findocc(SEQ *s_ptr, char *tofind);                                /* return array of pointers to OCC objects */
 
+OCC **findocc1(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ);
 
 #endif /* biostat_h */

@@ -72,8 +72,41 @@ unsigned repfind(char *s, char c, unsigned minlen, unsigned start, STAT_T *len){
             }
         }
     
-    if(s[i] == '\0')                            /* tell the caller that the string has been completely scanned */
+    if(s[i] == '\0')                                    /* tell the caller that the string has been completely scanned */
         ctrl.eof = 1;
         
     return NOTFOUND;
+}
+
+/* a function that takes a target sequence to search and return the number of occurrences of that sequence */
+unsigned long sfind1(char *targ, SRCH_T *pat, unsigned long start){
+    
+    static unsigned long cnt = 0;                       /* the counter of the number of occurrences of the string within 'targ' */
+    
+    int i, j;
+    for(i = start; targ[i]; i++)
+        if(targ[i] == *pat->str){
+            for(j = 0; targ[i] == (pat->str)[0]; i++, j++)
+                ;
+            if(pat->maxlen == UNSET){
+                if(j >= pat->minlen){
+                    cnt++;                              /* found occurrence: increment the counter */
+                    pat->curlen = j;                    /* save the current length of the string found */
+                    pat->strpos = i-j;                  /* save the starting position */
+                    return cnt;
+                }
+            }else{
+                if(!(pat->str)[j]){                     /* here, I check that the null character was reached in pat->str */
+                    cnt++;
+                    pat->curlen = j;
+                    pat->strpos = i-j;
+                    return cnt;
+                }
+            }
+        }
+    
+    if(!ctrl.eof)
+        ctrl.eof = 1;
+        
+    return cnt;
 }

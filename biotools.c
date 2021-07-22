@@ -42,8 +42,15 @@ int main(int argc, char *argv[]){
     
     printf("T>3:\t%lu\n", repcount(s_ptr, 'T', 3U));                        /* count number of times in which T is repeated more than 3 times */
     
+    SRCH_T *targ;
+    if((targ = alloc_srch()) == NULL)
+        raise_error("main() can't alloc memory for SRCH_T object\n");
+    targ->str = "ATG";
+    targ->minlen = targ->maxlen = strlen(targ->str);
+    
     OCC **fptr;
-    fptr = findocc(s_ptr, "ATG");
+    unsigned long nocc;
+    fptr = findocc1(&nocc, s_ptr, targ);
     
     int i;
     for(i = 0; *(fptr+i) != NULL; i++)

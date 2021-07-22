@@ -32,4 +32,15 @@ typedef struct occurrence {
     STAT_T flen;                            /* tells how much is long the match */
 } OCC;
 
+/* define a type for performing a search within a sequence */
+
+typedef struct search {
+    char *str;                              /* string to search */
+    unsigned long minlen;                   /* minimum length of the string to search */
+    unsigned long maxlen;                   /* maximum length of the string to search (IF ANY) */
+    unsigned long curlen;                   /* true length of the found string */
+    unsigned long strpos;                   /* the start position to search from */
+} SRCH_T;
+
+
 #endif /* biotypes_h */
