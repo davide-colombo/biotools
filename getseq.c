@@ -22,11 +22,15 @@ SEQ *getseq(FILE *fp){
     char line[size];                                                        /* array in which is stored the current line */
     if(fgetline(fp, line, size) == 0 && ctrl.eof)
         raise_error("getseq() try to read the first line but fails\n");
+    
+    if(line[0] != '>')
+        raise_error("getseq() can't alloc sequence because name is missing\n");
+    
     strcpy(s_ptr->name, line);                                              /* copy the line included '\0' */
     
-    if(strstr(s_ptr->name, "protein") != NULL)
+    if(strstr(s_ptr->name, "protein") != NULL)                              /* determine if is a protein */
         s_ptr->is_pro = 1;
-    else if(strstr(s_ptr->name, "transcript") != NULL)
+    else if(strstr(s_ptr->name, "transcript") != NULL)                      /* determine if is a transcript */
         s_ptr->is_rna = 1;
     else
         s_ptr->is_dna = 1;
