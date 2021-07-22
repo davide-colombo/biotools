@@ -28,8 +28,8 @@ typedef unsigned long STAT_T;
 /* define a type for saving occurrences within a SEQ object */
 
 typedef struct occurrence {
-    STAT_T strpos;                          /* tells where the match is starting from index 0 */
-    STAT_T length;                          /* tells how much is long the match */
+    STAT_T fpos;                            /* tells where the match is starting from index 0 */
+    STAT_T flen;                            /* tells how much is long the match */
 } OCC;
 
 #endif /* biotypes_h */

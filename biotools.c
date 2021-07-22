@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
     
     int i;
     for(i = 0; *(fptr+i) != NULL; i++)
-        printf("(%d) found occurrence of '%s' at %lu\n", i, "ATG", (*(fptr+i))->strpos);
+        printf("(%d) found occurrence of '%s' at %lu\n", i, "ATG", (*(fptr+i))->fpos);
         
     return 0;
 }

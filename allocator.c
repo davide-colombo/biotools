@@ -7,6 +7,14 @@
 
 #include "allocator.h"
 
+OCC **alloc_occptr_arr(unsigned size){
+    return (OCC **)malloc(sizeof(OCC *) * size);
+}
+
+OCC *alloc_occ(void){
+    return (OCC *)malloc(sizeof(OCC));
+}
+
 SEQ *alloc_sequence(void){
     return (SEQ *)malloc(sizeof(SEQ));
 }

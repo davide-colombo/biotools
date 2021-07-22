@@ -13,6 +13,7 @@
 #include "bioconst.h"
 #include "bioerr.h"
 #include "biostr.h"
+#include "allocator.h"
 
 #include "biovar.h"
 FLAG ctrl;
