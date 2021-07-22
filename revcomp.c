@@ -9,6 +9,9 @@
 
 SEQ *revcomp(SEQ *s_ptr){
     
+    if(!is_dna(s_ptr))
+        raise_error("revcomp() fails because a wrong type of sequence was passed\n");
+    
     SEQ *r_ptr;
     if((r_ptr = alloc_sequence()) == NULL)                                  /* alloc memory for the entire sequence */
         raise_error("revcomp() can't alloc memory for 'SEQ *' object\n");

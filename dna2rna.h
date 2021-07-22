@@ -14,6 +14,7 @@
 #include "bioconst.h"
 #include "bioerr.h"
 #include "allocator.h"
+#include "biocheck.h"
 
 SEQ *transcript(SEQ *s_ptr);                    /* transcription process applied to 's_ptr->seq' */
 

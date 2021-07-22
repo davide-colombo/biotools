@@ -42,7 +42,7 @@ OCC **findocc(LEN_T *cnt, SEQ *s_ptr, SRCH_T *targ){
     OCC *o_ptr;                                                         /* pointer to 'OCC' object */
     
     if((fptr = alloc_occptr_arr(size)) == NULL)
-        raise_error("findocc1() can't alloc memory for \
+        raise_error("findocc() can't alloc memory for \
                     array of pointers to OCC objects\n");
     
     FPOS_T i, fpos;
@@ -54,7 +54,7 @@ OCC **findocc(LEN_T *cnt, SEQ *s_ptr, SRCH_T *targ){
             }
             
             if((o_ptr = occ(fpos, targ->curlen)) == NULL)                           /* alloc memory for a single OCC object */
-                raise_error("findocc1() can't alloc memory\
+                raise_error("findocc() can't alloc memory\
                             for OCC object\n");
             fptr[(*cnt)++] = o_ptr;
         }

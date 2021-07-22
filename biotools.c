@@ -21,6 +21,8 @@ int main(int argc, char *argv[]){
     s_ptr = getseq(fp);                                                     /* read sequence */
     printf("name:\t%s\n", s_ptr->name);
     printf("string:\t%s\n", s_ptr->seq);
+    printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
+           s_ptr->is_dna, s_ptr->is_rna, s_ptr->is_pro);
     
     SEQ *r_ptr;
     r_ptr = revcomp(s_ptr);                                                 /* reverse complement */
@@ -67,7 +69,7 @@ int main(int argc, char *argv[]){
         printf("(%lu) found occurrence of '%s' at %lu\n",
                i, targ->str, (*(fptr+i))->fpos);
         
-    printf("nocc1:\t%lu\n", nocc);
+    printf("nocc:\t%lu\n", nocc);
     
     return 0;
 }

@@ -7,8 +7,10 @@
 
 #include "dna2rna.h"
 
-
 SEQ *transcript(SEQ *s_ptr){
+    
+    if(!is_dna(s_ptr))
+        raise_error("transcript() fails because a wrong type of SEQ was passed \n");
     
     SEQ *t_ptr;                                                                     /* pointer to transcripted SEQ object */
     if((t_ptr = alloc_sequence()) == NULL)                                          /* alloc SEQ object */
@@ -20,12 +22,11 @@ SEQ *transcript(SEQ *s_ptr){
     if((t_ptr->seq = alloc_chararray(strlen(s_ptr->seq)+1)) == NULL)                /* alloc memory for char array of the sequence string */
         raise_error("transcript() fails to alloc memory for 'char' array\n");
     
-    char *temp, *ptr;
+    char *temp, *ptr;                                                               /* use pointers to char to improve code readability */
     temp = s_ptr->seq;
     ptr = t_ptr->seq;
     
     FPOS_T i;
-    int c;
     for(i = 0; isalpha(temp[i]); i++)
         ptr[i] = (temp[i] == 'T') ? temp[i]+1 : temp[i];                            /* temp[i]+1 == 'U' */
     

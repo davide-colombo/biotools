@@ -24,6 +24,13 @@ SEQ *getseq(FILE *fp){
         raise_error("getseq() try to read the first line but fails\n");
     strcpy(s_ptr->name, line);                                              /* copy the line included '\0' */
     
+    if(strstr(s_ptr->name, "protein") != NULL)
+        s_ptr->is_pro = 1;
+    else if(strstr(s_ptr->name, "transcript") != NULL)
+        s_ptr->is_rna = 1;
+    else
+        s_ptr->is_dna = 1;
+        
     LEN_T len, i;
     for(i = 0; (len = fgetline(fp, line, size)) > 0; i += len){
         if(i+len >= size)

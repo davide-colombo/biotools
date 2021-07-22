@@ -13,6 +13,9 @@
 typedef struct seq {
     char *name;
     char *seq;
+    unsigned int is_dna : 1;
+    unsigned int is_rna : 1;
+    unsigned int is_pro : 1;
 } SEQ;
 
 /* a structure that defines some useful flags */
