@@ -23,7 +23,9 @@ SEQ *transcript(SEQ *s_ptr){
     char *temp, *ptr;
     temp = s_ptr->seq;
     ptr = t_ptr->seq;
-    int i, c;
+    
+    FPOS_T i;
+    int c;
     for(i = 0; isalpha(temp[i]); i++)
         ptr[i] = (temp[i] == 'T') ? temp[i]+1 : temp[i];                            /* temp[i]+1 == 'U' */
     

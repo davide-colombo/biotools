@@ -9,9 +9,10 @@
 
 /* a function that return the length of the line read and sets the external FLAG when the last line is read */
 
-unsigned fgetline(FILE *fp, char *s, unsigned long lim){
+LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
 
-    int i, c;
+    LEN_T i;
+    int c;
     for(i = 0; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
         s[i] = c;
     s[i] = '\0';
@@ -23,8 +24,8 @@ unsigned fgetline(FILE *fp, char *s, unsigned long lim){
 
 /* a function that copies characters from 'from' char array to 'to' char array starting at 'start' index */
 
-void strcpy_from(char *to, char *from, unsigned start){
-    int i, j;
+void strcpy_from(char *to, char *from, FPOS_T start){
+    FPOS_T i, j;
     for(i = start, j = 0; from[j]; i++, j++)
         to[i] = from[j];
 }
@@ -39,9 +40,9 @@ void reverse(char *s){
 
 /* a function that takes a target sequence to search and return the number of occurrences of that sequence */
 
-unsigned sfind(char *targ, SRCH_T *pat, unsigned long start){
+FPOS_T sfind(char *targ, SRCH_T *pat, FPOS_T start){
     
-    int i, j;
+    FPOS_T i, j;
     for(i = start; targ[i]; i++)
         if(targ[i] == *pat->str){
             for(j = 0; targ[i] == (pat->str)[j]; i++, j++)

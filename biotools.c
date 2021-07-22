@@ -43,12 +43,12 @@ int main(int argc, char *argv[]){
     targ->minlen = targ->maxlen = strlen(targ->str);
     
     OCC **fptr;
-    unsigned long nocc;
+    LEN_T nocc;
     fptr = findocc(&nocc, s_ptr, targ);                                     /* find occurrences and get the count */
     
-    int i;
+    LEN_T i;
     for(i = 0; *(fptr+i) != NULL; i++)                                      /* printt OCC array */
-        printf("(%d) found occurrence of '%s' at %lu\n", i, "ATG", (*(fptr+i))->fpos);
+        printf("(%lu) found occurrence of '%s' at %lu\n", i, "ATG", (*(fptr+i))->fpos);
         
     printf("nocc:\t%lu\n", nocc);
     

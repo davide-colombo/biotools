@@ -10,7 +10,7 @@
 
 /* function that return the length of a sequence */
 
-STAT_T genelen(SEQ *s_ptr){
+LEN_T genelen(SEQ *s_ptr){
     return strlen(s_ptr->seq);
 }
 
@@ -22,29 +22,30 @@ double gcperc(SEQ *s_ptr){
     ptr = s_ptr->seq;
     
     double gc;
-    int i;
+    FPOS_T i;
     for(gc = 0.0, i = 0; ptr[i]; i++)
         if(ptr[i] == 'G' || ptr[i] == 'C')
             gc++;
     return gc / i;
 }
 
-OCC **findocc(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ){
+/* a function that searches for occurrences of 'targ->str' string within 's_ptr->seq' */
+
+OCC **findocc(LEN_T *cnt, SEQ *s_ptr, SRCH_T *targ){
     
-    unsigned long size = INITSIZE;
+    LEN_T size = INITSIZE;
     
     char *ptr;
     ptr = s_ptr->seq;
     
     OCC **fptr;
-    int nocc;
+    LEN_T nocc;
     OCC *o_ptr;
     
     if((fptr = alloc_occptr_arr(size)) == NULL)
         raise_error("findocc1() can't alloc memory for array of pointers to OCC objects\n");
     
-    STAT_T fpos;
-    int i;
+    FPOS_T i, fpos;
     for(i = 0; !ctrl.eof; i = (fpos + targ->curlen)){
         if((fpos = sfind(ptr, targ, i)) >= 0 && fpos <= strlen(ptr)){                      /* found occurrences */
             if(nocc >= size){

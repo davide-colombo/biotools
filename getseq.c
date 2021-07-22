@@ -24,7 +24,7 @@ SEQ *getseq(FILE *fp){
         raise_error("getseq() try to read the first line but fails\n");
     strcpy(s_ptr->name, line);                                              /* copy the line included '\0' */
     
-    int i, len;
+    LEN_T len, i;
     for(i = 0; (len = fgetline(fp, line, size)) > 0; i += len){
         if(i+len >= size)
             if((s_ptr->seq = realloc_chararray(s_ptr->seq, size+=EXPAND)) == NULL)

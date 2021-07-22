@@ -13,10 +13,10 @@
 #include "biostr.h"
 
 SRCH_T *alloc_srch(void);
-OCC **alloc_occptr_arr(unsigned size);
+OCC **alloc_occptr_arr(LEN_T size);
 OCC *alloc_occ(void);
 SEQ *alloc_sequence(void);
-char *alloc_chararray(unsigned size);
-char *realloc_chararray(char *, unsigned long);
+char *alloc_chararray(LEN_T size);
+char *realloc_chararray(char *, LEN_T size);
 
 #endif /* allocator_h */

@@ -21,24 +21,28 @@ typedef struct flag {
     unsigned int eof : 1;
 } FLAG;
 
-/* define a type for statistical values */
+/* define a type for position within a sequence string */
 
-typedef unsigned long STAT_T;
+typedef unsigned long FPOS_T;
+
+/* define a type for the length of a sequence string */
+
+typedef unsigned long LEN_T;
 
 /* define a type for saving occurrences within a SEQ object */
 
 typedef struct occurrence {
-    STAT_T fpos;                            /* tells where the match is starting from index 0 */
-    STAT_T flen;                            /* tells how much is long the match */
+    FPOS_T fpos;                            /* tells where the match is starting from index 0 */
+    FPOS_T flen;                            /* tells how much is long the match */
 } OCC;
 
 /* define a type for performing a search within a sequence */
 
 typedef struct search {
     char *str;                              /* string to search */
-    unsigned long minlen;                   /* minimum length of the string to search */
-    unsigned long maxlen;                   /* maximum length of the string to search (IF ANY) */
-    unsigned long curlen;                   /* true length of the found string */
+    LEN_T minlen;                           /* minimum length of the string to search */
+    LEN_T maxlen;                           /* maximum length of the string to search (IF ANY) */
+    LEN_T curlen;                           /* true length of the found string */
 } SRCH_T;
 
 

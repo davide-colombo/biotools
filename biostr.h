@@ -16,9 +16,9 @@
 #include "biovar.h"
 extern FLAG ctrl;
 
-unsigned fgetline(FILE *fp, char *line, unsigned long lim);
-void strcpy_from(char *to, char *from, unsigned start);
+LEN_T fgetline(FILE *fp, char *line, unsigned long lim);
+FPOS_T sfind(char *targ, SRCH_T *pat, FPOS_T strpos);
+void strcpy_from(char *to, char *from, FPOS_T start);
 void reverse(char *s);
-unsigned sfind(char *targ, SRCH_T *pat, unsigned long start);
 
 #endif /* biostr_h */

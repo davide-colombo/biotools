@@ -24,7 +24,7 @@ SEQ *revcomp(SEQ *s_ptr){
     temp = s_ptr->seq;                                                      /* pointer to the original sequence */
     ptr = r_ptr->seq;                                                       /* pointer to the rev comp sequence */
         
-    int i;
+    FPOS_T i;
     for(i = 0; isalpha(temp[i]); i++)
         ptr[i] = ((temp[i] == 'A') ? temp[i]+A2T :
                   (temp[i] == 'T') ? temp[i]-A2T :

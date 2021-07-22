@@ -18,8 +18,8 @@
 #include "biovar.h"
 FLAG ctrl;
 
-STAT_T genelen(SEQ *s_ptr);                                             /* return strlen of 's_ptr->seq' */
+LEN_T genelen(SEQ *s_ptr);                                             /* return strlen of 's_ptr->seq' */
 double gcperc(SEQ *s_ptr);                                              /* return 'G+C / (A+C+G+T)' */
-OCC **findocc(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ);
+OCC **findocc(LEN_T *cnt, SEQ *s_ptr, SRCH_T *targ);
 
 #endif /* biostat_h */
