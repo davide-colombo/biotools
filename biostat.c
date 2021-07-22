@@ -5,23 +5,24 @@
 //  Created by Davide Colombo on 21/07/21.
 //
 
+#include <stdio.h>
 #include "biostat.h"
 
 /* function that return the number of occurrences of the string 's' within another the 'SEQ' string */
 
 STAT_T scount(SEQ *s_ptr, char *s){
     
-    char *ptr;                                              /* define pointer to char to improve code readability */
+    char *ptr;                                                      /* define pointer to char to improve code readability */
     ptr = s_ptr->seq;
     
-    STAT_T cnt;                                             /* variable in which is stored the number of match */
+    STAT_T cnt;                                                     /* variable in which is stored the number of match */
     int i, f;
     
-    for(i = 0, cnt = 0; !ctrl.eof; i+=(f+strlen(s)))        /* cycle until the callee does not set the eof flag */
-        if((f = sfind(ptr, s, i)) != NOTFOUND)              /* 'f' is the index of the occurrence */
+    for(i = 0, cnt = 0; !ctrl.eof; i+=(f+strlen(s)))                /* cycle until the callee does not set the eof flag */
+        if((f = sfind(ptr, s, i)) >= 0 && f <= strlen(ptr))         /* 'f' is the index of the occurrence */
             cnt++;
     
-    if(ctrl.eof)                                            /* reset the global variable to make it available to other functions */
+    if(ctrl.eof)                                                    /* reset the global variable to make it available to other functions */
         ctrl.eof = 0;
     
     return cnt;
@@ -56,7 +57,7 @@ STAT_T genelen(SEQ *s_ptr){
 
 double gcperc(SEQ *s_ptr){
     
-    char *ptr;                                              /* defined for improving code readability */
+    char *ptr;                                                  /* defined for improving code readability */
     ptr = s_ptr->seq;
     
     double gc;
@@ -72,18 +73,18 @@ OCC **findocc(SEQ *s_ptr, char *s){
     unsigned long size = INITSIZE;
     
     OCC **fptr;                                                 /* define an array of pointer to OCC typedef objects */
-    int nocc = 0;
+    int nocc;
     OCC *o_ptr;                                                 /* pointer to OCC object that will be allocated during the search */
     
     char *ptr;                                                  /* define a pointer to char for increase code readability */
     ptr = s_ptr->seq;
     
-    fptr = (OCC **)malloc(sizeof(OCC *) * 10);
+    fptr = (OCC **)malloc(sizeof(OCC *) * size);
     
     STAT_T matchpos;                                            /* position of the match within string pointed by ptr */
     int i;
-    for(i = 0; !ctrl.eof; i+=(matchpos+strlen(s))){
-        if((matchpos = sfind(ptr, s, i)) != NOTFOUND){
+    for(i = 0, nocc = 0; !ctrl.eof; i = (matchpos+strlen(s))){
+        if((matchpos = sfind(ptr, s, i)) >= 0 && matchpos <= strlen(ptr)){
             if(nocc >= size){
                 // TODO: realloc OCC array
             }

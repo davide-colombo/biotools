@@ -44,7 +44,7 @@ unsigned sfind(char *s, char *p, unsigned start){
     int i, j;
     for(i = start; s[i]; i++)
         if(s[i] == p[0]){
-            for(j = 0; (s[i] == p[j]) && p[j]; i++, j++)
+            for(j = 0; s[i] == p[j]; i++, j++)
                 ;
             if(!p[j])
                 return i-j;
