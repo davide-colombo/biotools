@@ -46,7 +46,7 @@ OCC **findocc(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ){
     STAT_T fpos;
     int i;
     for(i = 0; !ctrl.eof; i = (fpos + targ->curlen)){
-        if((fpos = sfind1(ptr, targ, i)) >= 0 && fpos <= strlen(ptr)){                      /* found occurrences */
+        if((fpos = sfind(ptr, targ, i)) >= 0 && fpos <= strlen(ptr)){                      /* found occurrences */
             if(nocc >= size){
                 // TODO: realloc array of pointers
             }

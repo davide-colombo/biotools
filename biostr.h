@@ -19,10 +19,6 @@ extern FLAG ctrl;
 unsigned fgetline(FILE *fp, char *line, unsigned long lim);
 void strcpy_from(char *to, char *from, unsigned start);
 void reverse(char *s);
-unsigned sfind(char *tosearch, char *tofind, unsigned startpos);
-unsigned repfind(char *tosearch, char tofind, unsigned minlen, unsigned startpos, STAT_T *actlen);
-
-
-unsigned sfind1(char *targ, SRCH_T *pat, unsigned long start);
+unsigned sfind(char *targ, SRCH_T *pat, unsigned long start);
 
 #endif /* biostr_h */

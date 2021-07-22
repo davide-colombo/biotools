@@ -37,49 +37,9 @@ void reverse(char *s){
         c = s[i], s[i] = s[j], s[j] = c;
 }
 
-/* function that searches occurrences of 'p' within 's' starting from 'start' and communicate end to the caller by setting 'ctrl.eof' to 1 */
-
-unsigned sfind(char *s, char *p, unsigned start){
-    
-    int i, j;
-    for(i = start; s[i]; i++)
-        if(s[i] == p[0]){
-            for(j = 0; s[i] == p[j]; i++, j++)
-                ;
-            if(!p[j])
-                return i-j;
-        }
-    
-    if(s[i] == '\0')                                /* this tells the caller that the string 's' has been completely scanned */
-        ctrl.eof = 1;
-    
-    return NOTFOUND;
-}
-
-/* function that searcher occurrences of 'c' at least as long as 'minlen' within 's' starting from 'start'.
-   Also, stores the length of the current repeated sequence in 'len' and communicate end to the calles by setting 'ctrl.eof' to 1 */
-
-unsigned repfind(char *s, char c, unsigned minlen, unsigned start, STAT_T *len){
-    
-    int i, j;
-    for(i = start; s[i]; i++)
-        if(s[i] == c){
-            for(j = 0; s[i] == c; i++, j++)
-                ;
-            if(j >= minlen){
-                *len = j;
-                return i-j;
-            }
-        }
-    
-    if(s[i] == '\0')                                    /* tell the caller that the string has been completely scanned */
-        ctrl.eof = 1;
-        
-    return NOTFOUND;
-}
-
 /* a function that takes a target sequence to search and return the number of occurrences of that sequence */
-unsigned sfind1(char *targ, SRCH_T *pat, unsigned long start){
+
+unsigned sfind(char *targ, SRCH_T *pat, unsigned long start){
     
     int i, j;
     for(i = start; targ[i]; i++)
