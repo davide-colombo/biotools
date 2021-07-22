@@ -121,25 +121,27 @@ OCC **findocc1(unsigned long *cnt, SEQ *s_ptr, SRCH_T *targ){
     
     if((fptr = alloc_occptr_arr(size)) == NULL)
         raise_error("findocc1() can't alloc memory for array of pointers to OCC objects\n");
-
-    int i;
-    for(i = 0; !ctrl.eof; i = (targ->strpos + targ->curlen)){
-        *cnt = sfind1(ptr, targ, i);                            /* found occurrences */
-        
-        if(nocc >= size){
-            // TODO: realloc array of pointers
-        }
-        
-        if((o_ptr = alloc_occ()) == NULL)
-            raise_error("findocc1() can't alloc memory for OCC object\n");
-        o_ptr->fpos = targ->strpos;
-        o_ptr->flen = targ->curlen;
-        fptr[nocc++] = o_ptr;
-    }
-        
-    fptr[nocc] = NULL;                                          /* set the end of the array */
     
-    if(ctrl.eof)                                                /* reset the global flag so that other subroutines can use it */
+    STAT_T fpos;
+    int i;
+    for(i = 0; !ctrl.eof; i = (fpos + targ->curlen)){
+        if((fpos = sfind1(ptr, targ, i)) >= 0 && fpos <= strlen(ptr)){                      /* found occurrences */
+            if(nocc >= size){
+                // TODO: realloc array of pointers
+            }
+            
+            if((o_ptr = alloc_occ()) == NULL)
+                raise_error("findocc1() can't alloc memory for OCC object\n");
+            o_ptr->fpos = fpos;
+            o_ptr->flen = targ->curlen;
+            fptr[nocc++] = o_ptr;
+        }
+    }
+    
+    fptr[nocc] = NULL;                                                  /* set the end of the array */
+    *cnt = nocc;
+    
+    if(ctrl.eof)                                                        /* reset the global flag so that other subroutines can use it */
         ctrl.eof = 0;
     
     return fptr;

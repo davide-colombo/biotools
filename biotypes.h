@@ -39,7 +39,6 @@ typedef struct search {
     unsigned long minlen;                   /* minimum length of the string to search */
     unsigned long maxlen;                   /* maximum length of the string to search (IF ANY) */
     unsigned long curlen;                   /* true length of the found string */
-    unsigned long strpos;                   /* the start position to search from */
 } SRCH_T;
 
 
