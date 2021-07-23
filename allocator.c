@@ -7,6 +7,34 @@
 
 #include "allocator.h"
 
+/* this function acts like an OOP constructor for object of type CDS */
+
+CDS_T *cds_t(char *str, char *stp, FPOS_T strpos, LEN_T len){
+    CDS_T *c_ptr;
+    if((c_ptr = alloc_cds()) == NULL)
+        return NULL;
+    c_ptr->str = alloc_chararray(strlen(str));
+    c_ptr->stp = alloc_chararray(strlen(stp));
+    strcpy(c_ptr->str, str);
+    strcpy(c_ptr->stp, stp);
+    c_ptr->strpos = strpos;
+    c_ptr->len = len;
+    return c_ptr;
+}
+
+CDS_T *alloc_cds(void){
+    return (CDS_T *)malloc(sizeof(CDS_T));
+}
+
+void free_cds_t(CDS_T *ptr){
+    if(ptr == NULL)
+        return;
+    
+    free((void *)ptr->str);
+    free((void *)ptr->stp);
+    free((void *)ptr);
+}
+
 /* this function acts like an OOP constructor */
 
 SRCH_T *srch_t(char *s, LEN_T min, LEN_T max){

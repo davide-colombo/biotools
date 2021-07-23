@@ -13,6 +13,10 @@
 #include "biotypes.h"
 #include "biostr.h"
 
+CDS_T *cds_t(char *str, char *stp, FPOS_T strpos, LEN_T len);
+CDS_T *alloc_cds(void);
+void free_cds_t(CDS_T *);
+
 SRCH_T *srch_t(char *s, LEN_T min, LEN_T max);
 void free_srch_t(SRCH_T *ptr);
 SRCH_T *alloc_srch(void);

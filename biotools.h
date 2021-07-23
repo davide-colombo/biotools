@@ -18,6 +18,7 @@
 #include "dna2rna.h"                    /* define function for converting DNA seq into RNA seq */
 #include "biostat.h"                    /* define functions for computing useful insights about SEQ objects */
 #include "biocheck.h"                   /* define functions for understanting type and check validity of SEQ objects */
+#include "getcds.h"                     /* define function for manipulating CDS_T objects */
 
 
 #endif /* biotools_h */

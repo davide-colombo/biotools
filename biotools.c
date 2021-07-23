@@ -32,15 +32,16 @@ int main(int argc, char *argv[]){
     }
     
 /* ================================================ is valid cds? ================================================ */
-        
-    printf("cds0:\t%s\n", (is_cds(s_ptr, 0UL) == 1 ? "TRUE" : "FALSE"));
     
-    if(is_cds(s_ptr, 0UL)){                                                      /* transcript the SEQ only if is a valid CDS */
-        SEQ *t_ptr;
-        t_ptr = transcript(s_ptr);                                          /* compute transcription of gene sequence */
-        printf("name:\t%s\n", t_ptr->name);
-        printf("mRNA:\t%s\n", t_ptr->seq);
-    }
+    CDS_T *c_ptr;
+    if((c_ptr = getcds(s_ptr, 62UL)) == NULL)
+        raise_error("main() fails to compute CDS\n");
+    printf("str: %s\tat %lu\tstp: %s\tlen: %lu\tend: %lu\n", c_ptr->str, c_ptr->strpos, c_ptr->stp, c_ptr->len, (c_ptr->strpos+c_ptr->len));
+    
+    SEQ *t_ptr;
+    t_ptr = transcript(s_ptr);                                              /* compute transcription of gene sequence */
+    printf("name:\t%s\n", t_ptr->name);
+    printf("mRNA:\t%s\n", t_ptr->seq);
     
     printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     
@@ -60,8 +61,8 @@ int main(int argc, char *argv[]){
     for(i = 0; i < nocc; i++){
         printf("(%lu) found occurrence of '%s' at %lu\n",
                i, targ->str, (*(fptr+i))->fpos);
-        if(is_cds(s_ptr, (*(fptr+i))->fpos))
-            printf("(%lu) valid cds starts at %lu\n", i, (*(fptr+i))->fpos);
+        /*if(is_cds(s_ptr, (*(fptr+i))->fpos))
+            printf("(%lu) valid cds starts at %lu\n", i, (*(fptr+i))->fpos);*/
     }
         
     printf("nocc:\t%lu\n", nocc);

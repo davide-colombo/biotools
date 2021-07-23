@@ -48,5 +48,14 @@ typedef struct search {
     LEN_T curlen;                           /* true length of the found string */
 } SRCH_T;
 
+/* define a type for CDS */
+
+typedef struct cds {
+    char *str;                              /* start codon */
+    char *stp;                              /* stop codon */
+    FPOS_T strpos;                          /* starting position */
+    LEN_T len;                              /* length of the sequence */
+} CDS_T;
+
 
 #endif /* biotypes_h */
