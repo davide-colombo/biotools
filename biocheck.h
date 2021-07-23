@@ -13,7 +13,7 @@
 #include "bioconst.h"
 #include "biostr.h"
 #include "biovar.h"
-extern SRCH_T *taa, *tga, *tag;
+extern SRCH_T taa, tga, tag;
 extern FLAG ctrl;
 
 unsigned int is_dna(SEQ *);
