@@ -24,16 +24,18 @@ int main(int argc, char *argv[]){
     printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
            s_ptr->is_dna, s_ptr->is_rna, s_ptr->is_pro);
     
-    SEQ *r_ptr;
-    r_ptr = revcomp(s_ptr);                                                 /* reverse complement */
-    printf("name:\t%s\n", r_ptr->name);
+    if(is_dna(s_ptr)){                                                      /* reveverse complement is computed only if SEQ is dna */
+        SEQ *r_ptr;
+        r_ptr = revcomp(s_ptr);                                             /* reverse complement */
+        printf("name:\t%s\n", r_ptr->name);
     printf("revcom:\t%s\n", r_ptr->seq);
+    }
     
 /* ================================================ is valid cds? ================================================ */
         
-    printf("cds:\t%s\n", (is_cds(s_ptr) == 1 ? "TRUE" : "FALSE"));
+    printf("cds0:\t%s\n", (is_cds(s_ptr, 0UL) == 1 ? "TRUE" : "FALSE"));
     
-    if(is_cds(s_ptr)){                                                      /* transcript the SEQ only if is a valid CDS */
+    if(is_cds(s_ptr, 0UL)){                                                      /* transcript the SEQ only if is a valid CDS */
         SEQ *t_ptr;
         t_ptr = transcript(s_ptr);                                          /* compute transcription of gene sequence */
         printf("name:\t%s\n", t_ptr->name);
@@ -55,9 +57,12 @@ int main(int argc, char *argv[]){
     fptr = findocc(&nocc, s_ptr, targ);                                     /* find occurrences and get the count */
     
     LEN_T i;
-    for(i = 0; i < nocc; i++)
+    for(i = 0; i < nocc; i++){
         printf("(%lu) found occurrence of '%s' at %lu\n",
                i, targ->str, (*(fptr+i))->fpos);
+        if(is_cds(s_ptr, (*(fptr+i))->fpos))
+            printf("(%lu) valid cds starts at %lu\n", i, (*(fptr+i))->fpos);
+    }
         
     printf("nocc:\t%lu\n", nocc);
     

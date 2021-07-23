@@ -16,7 +16,7 @@
 #include "biovar.h"
 extern FLAG ctrl;
 
-char *strncpy_r(char *to, char *from, unsigned howmany);
+char *strncpy_from(char *to, char *from, FPOS_T strpos, unsigned howmany);
 LEN_T fgetline(FILE *fp, char *line, unsigned long lim);
 FPOS_T sfind(char *targ, SRCH_T *pat, FPOS_T strpos);
 void strcpy_from(char *to, char *from, FPOS_T start);

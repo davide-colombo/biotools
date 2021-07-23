@@ -9,7 +9,11 @@
 #define biovar_h
 
 #include "biotypes.h"
+#include "bioconst.h"
+#include "allocator.h"
 
-FLAG ctrl;      /* FLAG variable used by the callee to communicate to the caller that a given condition has been reached */
+FLAG ctrl;                                              /* FLAG variable to communicate between caller and callee */
+
+SRCH_T *taa, *tga, *tag;                                /* define pointers to 'SRCH_T' object that correspond to STOP codon */
 
 #endif /* biovar_h */

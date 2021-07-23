@@ -7,14 +7,11 @@
 
 #include "biostr.h"
 
-char *strncpy_r(char *to, char *from, unsigned howmany){
-    FPOS_T strpos;
-    strpos = strlen(from)-howmany;
-    
+char *strncpy_from(char *to, char *from, FPOS_T strpos, unsigned howmany){
     FPOS_T i, j;
-    for(i = strpos, j = 0; (to[j] = from[i]); i++, j++)
+    for(i = strpos, j = 0; j < howmany && (to[j] = from[i]); i++, j++)
         ;
-    
+    to[j] = '\0';
     return to;
 }
 
