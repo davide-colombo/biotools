@@ -10,8 +10,8 @@
 
 #include "biotypes.h"
 #include "bioconst.h"
-#include "allocator.h"
 #include "biovar.h"
+#include "biostr.h"
 
 unsigned hash(char *str);
 struct llist *lookup(char *str);

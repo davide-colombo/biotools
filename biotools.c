@@ -39,9 +39,11 @@ int main(int argc, char *argv[]){
     printf("str: %s\tat %lu\tstp: %s\tlen: %lu\tend: %lu\n", c_ptr->str, c_ptr->strpos, c_ptr->stp, c_ptr->len, (c_ptr->strpos+c_ptr->len));
     
     SEQ *t_ptr;
-    t_ptr = transcript(s_ptr);                                              /* compute transcription of gene sequence */
-    printf("name:\t%s\n", t_ptr->name);
-    printf("mRNA:\t%s\n", t_ptr->seq);
+    if(is_dna(s_ptr)){
+        t_ptr = transcript(s_ptr);                                          /* compute transcription of gene sequence */
+        printf("name:\t%s\n", t_ptr->name);
+        printf("mRNA:\t%s\n", t_ptr->seq);
+    }
     
     printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     
@@ -82,6 +84,11 @@ int main(int argc, char *argv[]){
                i, targ->str, (*(fptr+i))->fpos);
         
     printf("nocc:\t%lu\n", nocc);
+    
+    
+/* ================================================ TOKENIZE STRING ================================================ */
+    
+    readgcode();
     
     return 0;
 }

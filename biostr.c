@@ -5,6 +5,7 @@
 //  Created by Davide Colombo on 21/07/21.
 //
 
+#include <stdio.h>
 #include "biostr.h"
 
 char *strncpy_from(char *to, char *from, FPOS_T strpos, unsigned howmany){
@@ -19,9 +20,15 @@ char *strncpy_from(char *to, char *from, FPOS_T strpos, unsigned howmany){
 
 LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
 
-    LEN_T i;
     int c;
-    for(i = 0; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
+    LEN_T i;
+    if((c = getc(fp)) == '#'){                                                     /* skip the lines that begin with '#' */
+        while((c = getc(fp)) != '\n' && c != EOF)
+            ;
+        return 0;
+    }
+    
+    for(i = 0, s[i++] = c; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
         s[i] = c;
     s[i] = '\0';
     
@@ -72,4 +79,58 @@ FPOS_T sfind(char *targ, SRCH_T *pat, FPOS_T start){
         ctrl.eof = 1;
         
     return NOTFOUND;
+}
+
+char *strdup(const char *str){
+    char *ptr;
+    
+    if((ptr = alloc_chararray(strlen(str))) == NULL)                  /* +1 for '\0' */
+       return NULL;
+    strcpy(ptr, str);
+    return ptr;
+}
+
+/* function that splits the 'str' input argument in token by using 'sep' separator and return an array of pointers to single char array */
+
+char *strtok(char *str, const char *sep){
+    
+    LEN_T toksize = 1UL;                                                        /* for memory efficienty use a small TOKENSIZE */
+    char *token;
+    if((token = alloc_chararray(toksize)) == NULL)                              /* alloc memory for the next token to be read */
+        return NULL;
+    
+    LEN_T toklen;
+    static int i = 0;                                                           /* this variable is initialize only once */
+    
+    if(str[i] == '\0'){                                                         /* exit condition since 'i' is a static variable */
+        i = 0;
+        return NULL;
+    }
+    
+    int cond;
+    for(toklen = 0;                                                             /* initialize the length of this token */
+        str[i] && (cond = strncmp_from(str, sep, i, strlen(sep)));              /* not '\0' and not */
+        token[toklen++] = str[i++]){
+        if(i >= toksize)
+            if((token = realloc_chararray(token, toksize+=3)) == NULL)          /* realloc if the size is not enough */
+                return NULL;
+    }
+    
+    if(cond == 0)                                                               /* if a separator was found, then increment 'i' */
+        i++;
+    
+    token[toklen] = '\0';                                                       /* when '\0' occurr, end the token and return */
+    return token;
+}
+
+/* function that compares the first 'howmany' chars of the two strings beginning at 'strpos' */
+
+int strncmp_from(const char *s1, const char *s2, FPOS_T strpos, LEN_T howmany){
+    int i, j;
+    for(j = 0, i = strpos; j < howmany && (s1[i] == s2[j]); i++, j++)
+        ;
+    
+    if(j == howmany)                                                            /* because 'i' does not start from 0 */
+        return 0;
+    return s1[i]-s2[i];
 }

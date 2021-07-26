@@ -8,6 +8,7 @@
 #ifndef biovar_h
 #define biovar_h
 
+#include <stdio.h>
 #include "biotypes.h"
 #include "bioconst.h"
 
@@ -15,6 +16,6 @@ FLAG ctrl;                              /* FLAG variable to communicate between 
 
 SRCH_T taa, tga, tag;                   /* define variables for searching stop codons */
 
-struct llist *codontab[N_CODONS];              /* a lookup table for codon-to-aminoacids translation and vice versa */
+struct llist *codontab[N_CODONS];       /* a lookup table for codon-to-aminoacids translation and vice versa (STATIC ALLOCATION) */
 
 #endif /* biovar_h */

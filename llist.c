@@ -37,15 +37,15 @@ struct llist *install(char *name, char *defn){
     struct llist *new;
     unsigned hashval;
     
-    if((new = lookup(name)) == NULL){
-        new = (struct llist *)malloc(sizeof(*new));
+    if((new = lookup(name)) == NULL){                               /* if 'lookup()' fails we need to add */
+        new = (struct llist *)malloc(sizeof(*new));                 /* do not use allocator to decouple and make this script portable */
         if(new == NULL || (new->cdn = strdup(name)) == NULL)
             return NULL;
-        hashval = hash(name);
+        hashval = hash(name);                                       /* compute the hashval given the 'name' char array */
         new->next = codontab[hashval];
         codontab[hashval] = new;
     }else
-        free((void *) new->amm);
+        free((void *) new->amm);                                    /* if 'lookup()' does not fail the content is overridden */
     if((new->amm = strdup(defn)) == NULL)
         return NULL;
     

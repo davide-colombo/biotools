@@ -19,6 +19,8 @@
 #include "biostat.h"                    /* define functions for computing useful insights about SEQ objects */
 #include "biocheck.h"                   /* define functions for understanting type and check validity of SEQ objects */
 #include "getcds.h"                     /* define function for manipulating CDS_T objects */
+#include "llist.h"                      /* define a set of function for manipulate linked list */
+#include "filemanager.h"                /* define functions for reading files */
 
 
 #endif /* biotools_h */
