@@ -57,5 +57,15 @@ typedef struct cds {
     LEN_T len;                              /* length of the sequence */
 } CDS_T;
 
+/* define a type for codon-aminoacid translation */
+
+struct llist {
+    struct llist *next;                     /* pointer to next element of the linked list */
+    char *cdn;                              /* codon name */
+    char *amm;                              /* amminoacid associate with this codon */
+    unsigned int is_start : 1;              /* whether this codon is a start codon */
+    unsigned int is_stop : 1;               /* whether this codon is a stop codon */
+};
+
 
 #endif /* biotypes_h */

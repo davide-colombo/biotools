@@ -11,8 +11,10 @@
 #include "biotypes.h"
 #include "bioconst.h"
 
-FLAG ctrl;                                              /* FLAG variable to communicate between caller and callee */
+FLAG ctrl;                              /* FLAG variable to communicate between caller and callee */
 
-SRCH_T taa, tga, tag;
+SRCH_T taa, tga, tag;                   /* define variables for searching stop codons */
+
+struct llist *codontab[N_CODONS];              /* a lookup table for codon-to-aminoacids translation and vice versa */
 
 #endif /* biovar_h */

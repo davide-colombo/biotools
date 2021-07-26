@@ -20,4 +20,6 @@
 #define IS_START(str) ( (strcmp(str, "ATG") == 0) ? 1 : 0)
 #define IS_STOP(str) ( (strcmp(str, "TAG") == 0 || strcmp(str, "TGA") == 0 || strcmp(str, "TAA") == 0) ? 1 : 0 )
 
+#define N_CODONS 64
+
 #endif /* bioconst_h */
