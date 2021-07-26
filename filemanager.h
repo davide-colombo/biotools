@@ -9,13 +9,13 @@
 #define filemanager_h
 
 #include <stdio.h>
-
+#include <ctype.h>
 #include "biotypes.h"
 #include "bioconst.h"
 #include "biovar.h"
 #include "biostr.h"
 #include "llist.h"
 
-struct llist *readgcode(void);
+struct llist *getnode(FILE *fp);
 
 #endif /* filemanager_h */

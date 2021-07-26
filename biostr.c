@@ -5,7 +5,6 @@
 //  Created by Davide Colombo on 21/07/21.
 //
 
-#include <stdio.h>
 #include "biostr.h"
 
 char *strncpy_from(char *to, char *from, FPOS_T strpos, unsigned howmany){
@@ -21,16 +20,15 @@ char *strncpy_from(char *to, char *from, FPOS_T strpos, unsigned howmany){
 LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
 
     int c;
-    LEN_T i;
+    LEN_T i = 0;
     
-    if((c = getc(fp)) == '#'){                                                     /* skip the lines that begin with '#' */
+    while((c = getc(fp)) == '#')                                                     /* skip the lines that begin with '#' */
         while((c = getc(fp)) != '\n' && c != EOF)
             ;
-    }else{
-        for(i = 0, s[i++] = c; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
-            s[i] = c;
-        s[i] = '\0';
-    }
+    
+    for(s[i++] = c; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
+        s[i] = c;
+    s[i] = '\0';
     
     if(c == EOF)
         ctrl.eof = 1;

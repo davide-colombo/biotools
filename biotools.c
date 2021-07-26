@@ -88,7 +88,22 @@ int main(int argc, char *argv[]){
     
 /* ================================================ TOKENIZE STRING ================================================ */
     
-    readgcode();
+    FILE *fp1;
+    
+    if((fp1 = fopen("gcode.txt", "r")) == NULL)                      /* open the file in read mode */
+        return 1;
+    
+    struct llist *node;
+    
+    while((node = getnode(fp1)) != NULL){
+        printf("cdn: %s\n", node->cdn);
+        printf("amm: %s\n", node->amm);
+        printf("is_start: %d\n", node->is_start);
+        printf("is_stop: %d\n", node->is_stop);
+        printf(" ============================================================ \n");
+    }
+    
+    fclose(fp1);
     
     return 0;
 }
