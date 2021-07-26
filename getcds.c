@@ -17,8 +17,10 @@ CDS_T *getcds(SEQ *s_ptr, FPOS_T strpos){
     
     strncpy_from(start, ptr, strpos, CODONLEN);                         /* copy the first CODONLEN starting at 'strpos' */
     
-    if(!IS_START(start))                                                /* check valid start codon */
-        return 0;
+    if(!IS_START(start)){                                                /* check valid start codon */
+        raise_error("getcds() fails because 'start' is not a valid codon\n");
+        return NULL;
+    }
     
     FPOS_T i;                                                           /* var used for searching the SEQ->seq sequence */
     LEN_T d;                                                            /* var that stores the difference between stop codon and 'strpos' */
@@ -49,11 +51,6 @@ CDS_T *getcds(SEQ *s_ptr, FPOS_T strpos){
     if(ctrl.eof)
         ctrl.eof = 0;
     
-    
-    printf("ftaa = %lu\n", ftaa);
-    printf("ftag = %lu\n", ftag);
-    printf("ftga = %lu\n", ftga);
-    
     FPOS_T fpos = ftaa;
     strncpy_from(stop, ptr, ftaa, CODONLEN);
     
@@ -68,8 +65,10 @@ CDS_T *getcds(SEQ *s_ptr, FPOS_T strpos){
     }
     
     CDS_T *c_ptr;
-    if((c_ptr = cds_t(start, stop, strpos, (fpos+CODONLEN-strpos))) == NULL)
+    if((c_ptr = cds_t(start, stop, strpos, (fpos+CODONLEN-strpos))) == NULL){
+        raise_error("getcds() fails to alloc memory for pointer to CDS_T object\n");
         return NULL;
+    }
     
     return c_ptr;
 }

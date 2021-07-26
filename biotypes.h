@@ -22,6 +22,7 @@ typedef struct seq {
 
 typedef struct flag {
     unsigned int eof : 1;
+    unsigned int error : 1;
 } FLAG;
 
 /* define a type for position within a sequence string */

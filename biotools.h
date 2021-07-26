@@ -21,6 +21,9 @@
 #include "getcds.h"                     /* define function for manipulating CDS_T objects */
 #include "llist.h"                      /* define a set of function for manipulate linked list */
 #include "filemanager.h"                /* define functions for reading files */
+#include "translate.h"                  /* define a function for biological translation (mRNA -> DNA) */
 
+extern struct llist *codontab[];
+extern FLAG ctrl;
 
 #endif /* biotools_h */

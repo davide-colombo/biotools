@@ -12,6 +12,8 @@
 #include "bioconst.h"
 #include "allocator.h"
 #include "biostr.h"
+#include "bioerr.h"
+
 #include "biovar.h"
 extern SRCH_T taa, tga, tag;
 extern FLAG ctrl;

@@ -12,9 +12,10 @@
 #include <ctype.h>
 #include "biotypes.h"
 #include "bioconst.h"
-#include "bioerr.h"
 #include "allocator.h"
 #include "biocheck.h"
+#include "biostr.h"
+#include "bioerr.h"
 
 SEQ *transcript(SEQ *s_ptr);                    /* transcription process applied to 's_ptr->seq' */
 

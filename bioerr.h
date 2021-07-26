@@ -11,6 +11,9 @@
 #include <stdlib.h>                      /* for exit(int) */
 #include <stdio.h>
 #include <stdarg.h>
+#include "biotypes.h"
+#include "biovar.h"
+extern FLAG ctrl;
 
 void raise_error(char *msg, ...);
 

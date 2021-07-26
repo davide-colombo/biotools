@@ -38,7 +38,7 @@ LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
 
 /* a function that copies characters from 'from' char array to 'to' char array starting at 'start' index */
 
-void strcpy_from(char *to, char *from, FPOS_T start){
+void strcpy_from(char *to, const char *from, FPOS_T start){
     FPOS_T i, j;
     for(i = start, j = 0; from[j]; i++, j++)
         to[i] = from[j];
@@ -132,4 +132,18 @@ int strncmp_from(const char *s1, const char *s2, FPOS_T strpos, LEN_T howmany){
     if(j == howmany)                                                            /* because 'i' does not start from 0 */
         return 0;
     return s1[i]-s2[i];
+}
+
+/* a function for appending a string to another */
+
+char *sappend(char *str, const char *a){
+    LEN_T new_len = strlen(str) + strlen(a);
+    
+    char *ptr;
+    if((ptr = alloc_chararray(new_len)) == NULL)
+        return NULL;
+    strcpy_from(ptr, str, 0UL);                                                 /* do not include the '\0' character */
+    strcpy_from(ptr, a, strlen(str));                                           /* do not copy the '\0' */
+    ptr[new_len] = '\0';                                                        /* insert the '\0' to end the string */
+    return ptr;
 }

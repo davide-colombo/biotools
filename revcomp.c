@@ -9,18 +9,26 @@
 
 SEQ *revcomp(SEQ *s_ptr){
     
-    if(!is_dna(s_ptr))
+    if(!is_dna(s_ptr)){
         raise_error("revcomp() fails because a wrong type of sequence was passed\n");
+        return NULL;
+    }
     
     SEQ *r_ptr;
-    if((r_ptr = alloc_sequence()) == NULL)                                  /* alloc memory for the entire sequence */
+    if((r_ptr = alloc_sequence()) == NULL){                                  /* alloc memory for the entire sequence */
         raise_error("revcomp() can't alloc memory for 'SEQ *' object\n");
-    if((r_ptr->name = alloc_chararray(strlen(s_ptr->name)+1)) == NULL)      /* +1 for '\0' */
+        return NULL;
+    }
+    
+    if((r_ptr->name = sappend(s_ptr->name, "_revcomp")) == NULL){
         raise_error("revcomp() can't alloc memory for 'char' array\n");
-    strcpy(r_ptr->name, s_ptr->name);                                       /* copy the name */
+        return NULL;
+    }
 
-    if((r_ptr->seq = alloc_chararray(strlen(s_ptr->seq)+1)) == NULL)        /* alloc memory for char array that stores the sequence */
+    if((r_ptr->seq = alloc_chararray(strlen(s_ptr->seq)+1)) == NULL){        /* alloc memory for char array that stores the sequence */
         raise_error("revcomp() can't alloc memory for 'char' array\n");
+        return NULL;
+    }
     
     char *temp;                                                             /* used to improve readability */
     char *ptr;                                                              /* ... */

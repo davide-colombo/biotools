@@ -17,33 +17,49 @@ int main(int argc, char *argv[]){
     if((fp = fopen(argv[1], "r")) == NULL)                                  /* try to open the file */
         raise_error("main() can't open file at '%s'\n", argv[1]);
     
-    SEQ *s_ptr;
-    s_ptr = getseq(fp);                                                     /* read sequence */
-    printf("name:\t%s\n", s_ptr->name);
-    printf("string:\t%s\n", s_ptr->seq);
-    printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
-           s_ptr->is_dna, s_ptr->is_rna, s_ptr->is_pro);
+/* ================================================ READ THE SEQUENCE ================================================ */
     
-    if(is_dna(s_ptr)){                                                      /* reveverse complement is computed only if SEQ is dna */
-        SEQ *r_ptr;
-        r_ptr = revcomp(s_ptr);                                             /* reverse complement */
+    SEQ *s_ptr;
+    s_ptr = getseq(fp);
+    if(!ctrl.error){
+        printf("name:\t%s\n", s_ptr->name);
+        printf("string:\t%s\n", s_ptr->seq);
+        printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
+               s_ptr->is_dna, s_ptr->is_rna, s_ptr->is_pro);
+    }else
+        ctrl.error = 0;
+
+/* ================================================ REVERSE COMPLEMENT ================================================ */
+    
+    SEQ *r_ptr;
+    r_ptr = revcomp(s_ptr);
+    if(!ctrl.error){
         printf("name:\t%s\n", r_ptr->name);
-    printf("revcom:\t%s\n", r_ptr->seq);
-    }
+        printf("revcom:\t%s\n", r_ptr->seq);
+    }else
+        ctrl.error = 0;
     
 /* ================================================ is valid cds? ================================================ */
     
     CDS_T *c_ptr;
-    if((c_ptr = getcds(s_ptr, 62UL)) == NULL)
-        raise_error("main() fails to compute CDS\n");
-    printf("str: %s\tat %lu\tstp: %s\tlen: %lu\tend: %lu\n", c_ptr->str, c_ptr->strpos, c_ptr->stp, c_ptr->len, (c_ptr->strpos+c_ptr->len));
+    c_ptr = getcds(s_ptr, 62UL);
+    if(!ctrl.error)
+        printf("str: %s\tat %lu\tstp: %s\tlen: %lu\tend: %lu\n",
+               c_ptr->str, c_ptr->strpos, c_ptr->stp, c_ptr->len, (c_ptr->strpos+c_ptr->len));
+    else
+        ctrl.error = 0;
+    
+/* ================================================ TRANSCRIPTION ================================================ */
     
     SEQ *t_ptr;
-    if(is_dna(s_ptr)){
-        t_ptr = transcript(s_ptr);                                          /* compute transcription of gene sequence */
+    t_ptr = transcript(s_ptr);
+    if(!ctrl.error){
         printf("name:\t%s\n", t_ptr->name);
         printf("mRNA:\t%s\n", t_ptr->seq);
-    }
+    }else
+        ctrl.error = 0;
+    
+/* ================================================ GENE INFO ================================================ */
     
     printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
     
@@ -86,7 +102,7 @@ int main(int argc, char *argv[]){
     printf("nocc:\t%lu\n", nocc);
     
     
-/* ================================================ TOKENIZE STRING ================================================ */
+/* ================================================ READ THE GENETIC CODE ================================================ */
     
     FILE *fp1;
     
@@ -94,8 +110,12 @@ int main(int argc, char *argv[]){
         return 1;
     
     struct llist *node;
+    for(i = 0; (node = getnode(fp1)) != NULL; i++)
+        codontab[i] = node;
+    free((void *) node);
     
-    while((node = getnode(fp1)) != NULL){
+    for(i = 0; i < N_CODONS; i++){
+        node = codontab[i];
         printf("cdn: %s\n", node->cdn);
         printf("amm: %s\n", node->amm);
         printf("is_start: %d\n", node->is_start);
@@ -104,6 +124,12 @@ int main(int argc, char *argv[]){
     }
     
     fclose(fp1);
+    
+/* ================================================ TRANSLATE ================================================ */
+    
+    translate(s_ptr, c_ptr);
+    
+    
     
     return 0;
 }

@@ -14,5 +14,5 @@ void raise_error(char *msg, ...){
     vfprintf(stderr, msg, args);
     fprintf(stderr, "\n");
     va_end(args);
-    exit(1);
+    ctrl.error = 1;
 }

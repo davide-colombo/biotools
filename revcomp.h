@@ -15,6 +15,7 @@
 #include "bioerr.h"
 #include "allocator.h"
 #include "biocheck.h"
+#include "biostr.h"
 
 SEQ *revcomp(SEQ *);
 
