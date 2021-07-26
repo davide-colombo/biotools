@@ -17,15 +17,11 @@ struct llist *readgcode(void){
         return NULL;
     
     char line[INITSIZE];
-    int i = 0;
     char *token;
     while(!ctrl.eof){                                               /* fgetline() function sets the 'ctrl.eof' flag to 1 when ends */
         fgetline(fp, line, INITSIZE);                               /* read the next line in the file */
-        printf("(%d) line: %s\n", i, line);
-        while((token = strtok(line, "\t")) != NULL)
-            printf("tok = %s\n", token);
-        printf("\n");
-        i++;
+        if((token = strtok(line, "\t")) == NULL)
+            break;
     }
     
     if(ctrl.eof)

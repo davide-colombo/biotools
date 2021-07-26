@@ -22,18 +22,19 @@ LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
 
     int c;
     LEN_T i;
+    
     if((c = getc(fp)) == '#'){                                                     /* skip the lines that begin with '#' */
         while((c = getc(fp)) != '\n' && c != EOF)
             ;
-        return 0;
+    }else{
+        for(i = 0, s[i++] = c; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
+            s[i] = c;
+        s[i] = '\0';
     }
-    
-    for(i = 0, s[i++] = c; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
-        s[i] = c;
-    s[i] = '\0';
     
     if(c == EOF)
         ctrl.eof = 1;
+    
     return i;
 }
 
