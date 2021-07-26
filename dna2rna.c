@@ -9,18 +9,26 @@
 
 SEQ *transcript(SEQ *s_ptr){
     
-    if(!is_dna(s_ptr))
+    if(!is_dna(s_ptr)){
         raise_error("transcript() can't transcribe sequences that are not DNA\n");
+        return NULL;
+    }
     
     SEQ *t_ptr;                                                                     /* pointer to transcripted SEQ object */
-    if((t_ptr = alloc_sequence()) == NULL)                                          /* alloc SEQ object */
+    if((t_ptr = alloc_sequence()) == NULL){                                          /* alloc SEQ object */
         raise_error("transcript() can't alloc memory for pointer to SEQ object\n");
+        return NULL;
+    }
     
-    if((t_ptr->name = sappend(s_ptr->name, "_transcript")) == NULL)                 /* alloc memory for char array of the sequence name */
+    if((t_ptr->name = sappend(s_ptr->name, "_transcript")) == NULL){                 /* alloc memory for char array of the sequence name */
         raise_error("transcript() fails to append name\n");
+        return NULL;
+    }
 
-    if((t_ptr->seq = alloc_chararray(strlen(s_ptr->seq))) == NULL)                /* alloc memory for char array of the sequence string */
+    if((t_ptr->seq = alloc_chararray(strlen(s_ptr->seq))) == NULL){                /* alloc memory for char array of the sequence string */
         raise_error("transcript() fails to alloc sequence char array\n");
+        return NULL;
+    }
     
     char *temp, *ptr;                                                               /* use pointers to char to improve code readability */
     temp = s_ptr->seq;

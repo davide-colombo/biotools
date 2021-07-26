@@ -14,9 +14,11 @@
 #include "biocheck.h"
 #include "allocator.h"
 #include "biostr.h"
+#include "bioerr.h"
 
 #include "biovar.h"
 extern struct llist *codontab[];
+extern FLAG ctrl;
 
 SEQ *translate(SEQ *s_ptr, CDS_T *cds);
 

@@ -127,9 +127,12 @@ int main(int argc, char *argv[]){
     
 /* ================================================ TRANSLATE ================================================ */
     
-    translate(s_ptr, c_ptr);
-    
-    
+    SEQ *pro_ptr;
+    pro_ptr = translate(s_ptr, c_ptr);
+    if(!ctrl.error){
+        printf("no error has occurred during translation\n");
+    }else
+        ctrl.error = 0;
     
     return 0;
 }
