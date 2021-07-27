@@ -13,8 +13,8 @@ unsigned hash(char *s){
     unsigned hashval;
     
     for(hashval = 0; *s; s++)
-        hashval = *s + (N_CODONS-1) * hashval;
-    return hashval % N_CODONS;
+        hashval = *s + 31 * hashval;
+    return hashval % HASHSIZE;
 }
 
 /* function that return pointer to the element at index 'hashval' or NULL if not exist */
@@ -32,22 +32,16 @@ struct llist *lookup(char *s){
 
 /* function for storing values within the table. The new element is inserted at 'hashval' */
 
-struct llist *install(char *name, char *defn){
+struct llist *install_or_error(struct llist *node){
     
-    struct llist *new;
     unsigned hashval;
     
-    if((new = lookup(name)) == NULL){                               /* if 'lookup()' fails we need to add */
-        new = (struct llist *)malloc(sizeof(*new));                 /* do not use allocator to decouple and make this script portable */
-        if(new == NULL || (new->cdn = strdup(name)) == NULL)
-            return NULL;
-        hashval = hash(name);                                       /* compute the hashval given the 'name' char array */
-        new->next = codontab[hashval];
-        codontab[hashval] = new;
+    if(lookup(node->cdn) == NULL){                                      /* if 'lookup()' fails we need to add */
+        hashval = hash(node->cdn);                                      /* compute the hashval given the 'name' char array */
+        node->next = codontab[hashval];                                 /* bound the next node of the new node to the one at 'hashval' */
+        codontab[hashval] = node;                                       /* insert the new node */
     }else
-        free((void *) new->amm);                                    /* if 'lookup()' does not fail the content is overridden */
-    if((new->amm = strdup(defn)) == NULL)
-        return NULL;
+        ctrl.error = 1;                                                 /* if already exist, there's an error in the genetic code */
     
-    return new;
+    return node;
 }

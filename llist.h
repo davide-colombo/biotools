@@ -13,8 +13,10 @@
 #include "biovar.h"
 #include "biostr.h"
 
+extern FLAG ctrl;
+
 unsigned hash(char *str);
 struct llist *lookup(char *str);
-struct llist *install(char *name, char *defn);
+struct llist *install_or_error(struct llist *node);
 
 #endif /* llist_h */

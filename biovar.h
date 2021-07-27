@@ -16,6 +16,6 @@ FLAG ctrl;                              /* FLAG variable to communicate between 
 
 SRCH_T taa, tga, tag;                   /* define variables for searching stop codons */
 
-struct llist *codontab[N_CODONS];       /* a lookup table for codon-to-aminoacids translation and vice versa (STATIC ALLOCATION) */
+struct llist *codontab[HASHSIZE];       /* a lookup table for codon-to-aminoacids translation and vice versa (STATIC ALLOCATION) */
 
 #endif /* biovar_h */

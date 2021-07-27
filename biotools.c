@@ -110,18 +110,32 @@ int main(int argc, char *argv[]){
         return 1;
     
     struct llist *node;
-    for(i = 0; (node = fgetnode_tok(fp1)) != NULL; i++)
-        codontab[i] = node;
+    for(i = 0; (node = fgetnode_tok(fp1)) != NULL; i++){
+        install_or_error(node);
+        if(ctrl.error){
+            raise_error("main() can't install node in the linked list\n");
+            ctrl.error = 0;
+            break;
+        }
+    }
+    
     free((void *) node);
     
-    for(i = 0; i < N_CODONS; i++){
-        node = codontab[i];
-        printf("cdn: %s\n", node->cdn);
-        printf("amm: %s\n", node->amm);
-        printf("is_start: %d\n", node->is_start);
-        printf("is_stop: %d\n", node->is_stop);
-        printf(" ============================================================ \n");
+    int j;
+    for(i = j = 0; i < HASHSIZE; i++){
+        if((node = codontab[i]) == NULL)
+            continue;
+        
+        for(; node != NULL; node = node->next, j++){
+            printf("cdn: %s\n", node->cdn);
+            printf("amm: %s\n", node->amm);
+            printf("is_start: %d\n", node->is_start);
+            printf("is_stop: %d\n", node->is_stop);
+            printf(" ============================================================ \n");
+        }
     }
+    
+    printf("ncodons = %d\n", j);
     
     fclose(fp1);
     

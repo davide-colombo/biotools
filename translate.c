@@ -37,15 +37,19 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
     ptr = s_ptr->seq;
     new = p_ptr->seq;
     
+    char buf[INITSIZE];                                                         /* for storing the translated sequence */
+    char *bufp = buf;                                                           /* pointer to the top of the buffer */
+    
     int i;
     for(i = 0; i < strlen(ptr); i += CODONLEN){                                  /* condition on 'strlen' is a better test condition */
         // get the codon
         
         // search for the node
         
-        // get the associated ammino acid
+        // char amm = ;
         
-        // append to the array
+        // *bufp++ = amm;
+        
     }
     
     return p_ptr;
