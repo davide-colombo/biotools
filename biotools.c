@@ -144,7 +144,9 @@ int main(int argc, char *argv[]){
     SEQ *pro_ptr;
     pro_ptr = translate(s_ptr, c_ptr);
     if(!ctrl.error){
-        printf("no error has occurred during translation\n");
+        printf("translated seq: %s\n", pro_ptr->name);
+        for(i = 0; i < strlen(pro_ptr->seq); i++)
+            printf("%c", (pro_ptr->seq)[i]);
     }else
         ctrl.error = 0;
     

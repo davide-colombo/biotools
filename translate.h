@@ -15,6 +15,7 @@
 #include "allocator.h"
 #include "biostr.h"
 #include "bioerr.h"
+#include "llist.h"
 
 #include "biovar.h"
 extern struct llist *codontab[];
