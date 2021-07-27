@@ -7,7 +7,7 @@
 
 #include "filemanager.h"
 
-struct llist *getnode(FILE *fp){
+struct llist *fgetnode_tok(FILE *fp){
     
     if(ctrl.eof){                                           /* when enter the function and find EOF (setted by 'fgetline()') end and reset */
         ctrl.eof = 0;

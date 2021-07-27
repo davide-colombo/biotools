@@ -16,6 +16,6 @@
 #include "biostr.h"
 #include "llist.h"
 
-struct llist *getnode(FILE *fp);
+struct llist *fgetnode_tok(FILE *fp);
 
 #endif /* filemanager_h */

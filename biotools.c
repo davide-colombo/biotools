@@ -110,7 +110,7 @@ int main(int argc, char *argv[]){
         return 1;
     
     struct llist *node;
-    for(i = 0; (node = getnode(fp1)) != NULL; i++)
+    for(i = 0; (node = fgetnode_tok(fp1)) != NULL; i++)
         codontab[i] = node;
     free((void *) node);
     
