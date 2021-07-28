@@ -40,14 +40,17 @@ int main(int argc, char *argv[]){
         ctrl.error = 0;
     
 /* ================================================ is valid cds? ================================================ */
+    /* this snippet of code can be removed */
     
+    /*
     CDS_T *c_ptr;
-    c_ptr = getcds(s_ptr, 1306UL);                                            /* !!! PAY ATTENTION TO THIS LINE !!!*/
+    c_ptr = getcds(s_ptr, 1306UL);
     if(!ctrl.error)
         printf("found at: %lu\tlen: %lu\tend: %lu\n",
             c_ptr->strpos, c_ptr->len, (c_ptr->strpos+c_ptr->len));
     else
         ctrl.error = 0;
+    */
     
 /* ================================================ TRANSCRIPTION ================================================ */
     
@@ -76,14 +79,22 @@ int main(int argc, char *argv[]){
     fptr = findocc(&nocc, s_ptr, targ);                                     /* find occurrences and get the count */
     
     LEN_T i;
-    for(i = 0; i < nocc; i++){
+    for(i = 0; i < nocc; i++)
         printf("(%lu) found occurrence of '%s' at %lu\n",
                i, targ->str, (*(fptr+i))->fpos);
-        /*if(is_cds(s_ptr, (*(fptr+i))->fpos))
-            printf("(%lu) valid cds starts at %lu\n", i, (*(fptr+i))->fpos);*/
-    }
         
     printf("nocc:\t%lu\n", nocc);
+  
+/* ================================================ search a repeated sequence ================================================ */
+    
+    CDS_T *c_ptr;
+    c_ptr = search_cds(s_ptr, fptr, nocc);
+    if(!ctrl.error){
+        printf("found at: %lu\tlen: %lu\tend: %lu\n",
+            c_ptr->strpos, c_ptr->len, (c_ptr->strpos+c_ptr->len));
+    }
+    else
+        ctrl.error = 0;
     
 /* ================================================ search a repeated sequence ================================================ */
     

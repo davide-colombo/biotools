@@ -65,10 +65,35 @@ CDS_T *getcds(SEQ *s_ptr, FPOS_T strpos){
     }
     
     CDS_T *c_ptr;
-    if((c_ptr = cds_t(s_ptr, strpos, (fpos+CODONLEN-strpos))) == NULL){
+    if((c_ptr = cds_t(s_ptr, strpos, (fpos+CODONLEN-strpos))) == NULL){                     /* alloc memory for CDS_T object */
         raise_error("getcds() fails to alloc memory for pointer to CDS_T object\n");
         return NULL;
     }
     
     return c_ptr;
+}
+
+
+/* a function that takes an array of pointers to OCC objects and return the longest valid CDS sequence */
+/* THE USER MUST PROVIDE OCCURRENCES OF START CODONS */
+
+CDS_T *search_cds(SEQ *s_ptr, OCC **strocc, LEN_T cnt){
+    
+    CDS_T *cds, *temp;
+    FPOS_T i;
+    
+    temp = getcds(s_ptr, (strocc[0])->fpos);
+    
+    for(i = 1; i < cnt; i++){
+        if((cds = getcds(s_ptr, (strocc[i])->fpos)) == NULL){
+            raise_error("search_cds() fails at index (%d): getcds() return NULL\n", i);
+            return NULL;
+        }
+        if(cds->len > temp->len)
+            temp = cds;
+    }
+    
+    free((void *)cds);
+    
+    return temp;
 }

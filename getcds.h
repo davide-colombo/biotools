@@ -19,5 +19,6 @@ extern SRCH_T taa, tga, tag;
 extern FLAG ctrl;
 
 CDS_T *getcds(SEQ *, FPOS_T strpos);
+CDS_T *search_cds(SEQ *seq, OCC **occs, LEN_T nocc);
 
 #endif /* getcds_h */
