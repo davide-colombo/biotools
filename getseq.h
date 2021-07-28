@@ -19,5 +19,6 @@
 extern FLAG ctrl;
 
 SEQ *getseq(FILE *);
+SEQ **get_multiseq(FILE *);
 
 #endif /* getseq_h */

@@ -17,6 +17,7 @@
 #include "biovar.h"
 extern FLAG ctrl;
 
+
 char *strncpy_from(char *to, char *from, FPOS_T strpos, unsigned howmany);
 LEN_T fgetline(FILE *fp, char *line, unsigned long lim);
 FPOS_T sfind(char *targ, SRCH_T *pat, FPOS_T strpos);
@@ -27,5 +28,9 @@ char *strdup(const char *);
 char *strtok(char *str, const char *sep);
 int strncmp_from(const char *s1, const char *s2, FPOS_T strpos, LEN_T howmany);
 char *sappend(char *original, const char *to_append);
+
+
+char getbuf(FILE *);
+void putbuf(char);
 
 #endif /* biostr_h */

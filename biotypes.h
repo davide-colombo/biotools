@@ -23,6 +23,7 @@ typedef struct seq {
 typedef struct flag {
     unsigned int eof : 1;
     unsigned int error : 1;
+    unsigned int header : 1;                                /* flag that tells whether a header has already been encountered */
 } FLAG;
 
 /* define a type for position within a sequence string */

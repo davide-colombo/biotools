@@ -23,21 +23,23 @@ SEQ *getseq(FILE *fp){
         return NULL;
     }
     
-    char line[size];                                                        /* array in which is stored the current line */
-    if(fgetline(fp, line, size) == 0 && ctrl.eof){
-        raise_error("getseq() try to read the first line but fails\n");
-        return NULL;
+    char line[size];                                                    /* array in which is stored the current line */
+    if(fgetline(fp, line, size) == 0){
+        fgetline(fp, line, size);                                       /* read a second time to get the name */
+        strcpy(name, line);
     }
     
+    /*
     if(line[0] != '>'){
         raise_error("getseq() can't alloc sequence because name is missing\n");
         return NULL;
-    }
-    
-    strcpy(name, line);                                              /* copy the line included '\0' */
+    }*/
     
     LEN_T len, i;
     for(i = 0; (len = fgetline(fp, line, size)) > 0; i += len){
+        if(len == 0)    /* break when 'fgetline()' find a header */
+            break;
+        
         if(i+len >= size)
             if((seq = realloc_chararray(seq, size+=EXPAND)) == NULL){
                 raise_error("getseq() try to realloc memory but fails. Target size = %lu\n", size);
@@ -63,6 +65,39 @@ SEQ *getseq(FILE *fp){
     else
         s_ptr->is_dna = 1;
     
-    ctrl.eof = 0;                                                           /* initialize global variable after its use */
     return s_ptr;
+}
+
+/* function that takes a FILE object and return an array of pointers to SEQ objects */
+
+SEQ **get_multiseq(FILE *fp){
+    
+    SEQ **parr;
+    if((parr = (SEQ **)malloc(sizeof(SEQ *) * INITSIZE)) == NULL){
+        raise_error("get_multiseq() fails to alloc memory for array of pointers to 'SEQ *': requested size is %lu\n", INITSIZE);
+        return NULL;
+    }
+    LEN_T nseq = 0UL;
+    
+    SEQ *pseq;
+    while(!ctrl.eof){
+        printf("in\n");
+        
+        if((pseq = getseq(fp)) == NULL){
+            printf("inside\n");
+            raise_error("get_multiseq() fails: getseq() return NULL\n");
+            return NULL;
+        }
+        
+        //printf("name:\t%s\n", pseq->name);
+        //printf("string:\t%s\n", pseq->seq);
+        
+        parr[nseq++] = pseq;
+    }
+    
+    printf("nseq = %lu\n", nseq);
+    //parr[nseq] = NULL;
+    
+    return parr;
+    
 }

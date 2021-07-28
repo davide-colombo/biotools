@@ -20,6 +20,7 @@ int main(int argc, char *argv[]){
 /* ================================================ READ THE SEQUENCE ================================================ */
     
     SEQ *s_ptr;
+    /*
     s_ptr = getseq(fp);
     if(!ctrl.error){
         printf("name:\t%s\n", s_ptr->name);
@@ -27,8 +28,31 @@ int main(int argc, char *argv[]){
         printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
                s_ptr->is_dna, s_ptr->is_rna, s_ptr->is_pro);
     }else
-        ctrl.error = 0;
+        return 1;*/
 
+    
+/* ================================================ GET MULTIPLE SEQUENCES WITHIN A FILE ================================================ */
+    
+    SEQ **ptrarr;
+    ptrarr = get_multiseq(fp);
+    
+    int k;
+    if(!ctrl.error){
+        /*
+        printf("*ptrarr == NULL? %s\n", (*ptrarr == NULL) ? "TRUE" : "FALSE");
+        for(k = 0; k < 2; k++){
+            printf("name:\t%s\n", (ptrarr[k])->name);
+            printf("string:\t%s\n", (ptrarr[k])->seq);
+            printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
+                   (ptrarr[k])->is_dna, (ptrarr[k])->is_rna, (ptrarr[k])->is_pro);
+            printf("\n\n\n\n");
+        }*/
+    }else
+        return 2;
+    
+    
+    return 0;
+    
 /* ================================================ REVERSE COMPLEMENT ================================================ */
     
     SEQ *r_ptr;

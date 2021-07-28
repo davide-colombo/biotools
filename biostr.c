@@ -22,11 +22,22 @@ LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
     int c;
     LEN_T i = 0;
     
-    while((c = getc(fp)) == '#')                                                     /* skip the lines that begin with '#' */
-        while((c = getc(fp)) != '\n' && c != EOF)
-            ;
+    if(!ctrl.header){           /* if the last time I called this function there is no header, then do check on comments and so */
+        while((c = getbuf(fp)) == '#')                                                     /* skip the lines that begin with '#' */
+            while((c = getbuf(fp)) != '\n' && c != EOF)
+                ;
+        
+        if(c == '>'){
+            ctrl.header = 1;
+            putbuf(c);                                  /* save the '>' sign to the buffer for the next time I call this function */
+            return 0;
+        }
+        
+        s[i++] = c;                     /* this is done inside the if statement to avoid to loose the char read for testing the conditions */
+    }else
+        ctrl.header = 0;
     
-    for(s[i++] = c; --lim > 0 && (c = getc(fp)) != EOF && c != '\n'; i++)
+    for(; --lim > 0 && (c = getbuf(fp)) != EOF && c != '\n'; i++)
         s[i] = c;
     s[i] = '\0';
     
@@ -146,4 +157,20 @@ char *sappend(char *str, const char *a){
     strcpy_from(ptr, a, strlen(str));                                           /* do not copy the '\0' */
     ptr[new_len] = '\0';                                                        /* insert the '\0' to end the string */
     return ptr;
+}
+
+/* function to put and get char to the global (extern) buffer */
+
+char buf[BUFSIZE];                                                              /* buffer used to save content of the next line to be read */
+char *bufp = buf;                                                               /* pointer to buffer */
+
+char getbuf(FILE *fp){
+    return (bufp == buf) ? getc(fp) : *--bufp;
+}
+
+void putbuf(char c){
+    if(bufp < buf+BUFSIZE)
+        *bufp++ = c;
+    else
+        return;
 }
