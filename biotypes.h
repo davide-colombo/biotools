@@ -51,6 +51,8 @@ typedef struct search {
 
 /* define a type for CDS */
 
+// TODO: refactor the 'CDS_T' type to add 'SEQ *' object
+
 typedef struct cds {
     char *str;                              /* start codon */
     char *stp;                              /* stop codon */
@@ -67,6 +69,16 @@ struct llist {
     unsigned int is_start : 1;              /* whether this codon is a start codon */
     unsigned int is_stop : 1;               /* whether this codon is a stop codon */
 };
+
+/* define a type for the 5' - 3' untranslated regions */
+
+typedef struct utr{
+    CDS_T *cds;                             /* pointer to 'CDS_T' object to which the utr regions are referred to */
+    FPOS_T str5f;                           /* start position of the 5' UTR sequence*/
+    LEN_T len5f;                            /* length of the 5' UTR sequence */
+    FPOS_T str3f;                           /* start position of the 3' UTR sequence */
+    LEN_T len3f;                            /* length of the 3' UTR sequence */
+} UTR_T;
 
 
 #endif /* biotypes_h */

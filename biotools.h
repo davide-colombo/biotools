@@ -22,6 +22,7 @@
 #include "llist.h"                      /* define a set of function for manipulate linked list */
 #include "filemanager.h"                /* define functions for reading files */
 #include "translate.h"                  /* define a function for biological translation (mRNA -> DNA) */
+#include "getutr.h"                     /* define a function for getting the UTR regions of a sequence */
 
 extern struct llist *codontab[];
 extern FLAG ctrl;

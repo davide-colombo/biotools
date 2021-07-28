@@ -153,5 +153,17 @@ int main(int argc, char *argv[]){
     }else
         ctrl.error = 0;
     
+    
+/* ================================================ TRANSLATE ================================================ */
+    
+    UTR_T *u_ptr;
+    u_ptr = getutr(s_ptr, c_ptr);
+    if(!ctrl.error){
+        printf("5' - strpos = %lu\tlen = %lu\n", u_ptr->str5f, u_ptr->len5f);
+        printf("3' - strpos = %lu\tlen = %lu\n", u_ptr->str3f, u_ptr->len3f);
+    }else
+        ctrl.error = 0;
+    
+    
     return 0;
 }

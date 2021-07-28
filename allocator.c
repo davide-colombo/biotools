@@ -115,3 +115,17 @@ char *realloc_chararray(char *s, LEN_T size){
     return ptr;
 }
 
+/* function for allocating memory for 'UTR_T' */
+
+UTR_T *utr_t(CDS_T *cds, FPOS_T str5f, LEN_T len5f, FPOS_T str3f, LEN_T len3f){
+    UTR_T *ptr;
+    if((ptr = (UTR_T *)malloc(sizeof(*ptr))) == NULL)
+        return NULL;
+    
+    ptr->cds = cds;                                             /* point to the cell memory of 'cds' input arg, no copy is done */
+    ptr->str5f = str5f;
+    ptr->len5f = len5f;
+    ptr->str3f = str3f;
+    ptr->len3f = len3f;
+    return ptr;
+}

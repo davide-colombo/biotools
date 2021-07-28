@@ -32,4 +32,6 @@ SEQ *alloc_sequence(void);
 char *alloc_chararray(LEN_T size);
 char *realloc_chararray(char *, LEN_T size);
 
+UTR_T*utr_t(CDS_T *cds, FPOS_T str5f, LEN_T len5f, FPOS_T str3f, LEN_T len3f);
+
 #endif /* allocator_h */
