@@ -65,7 +65,7 @@ CDS_T *getcds(SEQ *s_ptr, FPOS_T strpos){
     }
     
     CDS_T *c_ptr;
-    if((c_ptr = cds_t(start, stop, strpos, (fpos+CODONLEN-strpos))) == NULL){
+    if((c_ptr = cds_t(s_ptr, strpos, (fpos+CODONLEN-strpos))) == NULL){
         raise_error("getcds() fails to alloc memory for pointer to CDS_T object\n");
         return NULL;
     }

@@ -54,8 +54,7 @@ typedef struct search {
 // TODO: refactor the 'CDS_T' type to add 'SEQ *' object
 
 typedef struct cds {
-    char *str;                              /* start codon */
-    char *stp;                              /* stop codon */
+    SEQ *seq;                               /* the sequence to which this 'CDS_T' object correspond to */
     FPOS_T strpos;                          /* starting position */
     LEN_T len;                              /* length of the sequence */
 } CDS_T;

@@ -44,8 +44,8 @@ int main(int argc, char *argv[]){
     CDS_T *c_ptr;
     c_ptr = getcds(s_ptr, 1306UL);                                            /* !!! PAY ATTENTION TO THIS LINE !!!*/
     if(!ctrl.error)
-        printf("str: %s\tat %lu\tstp: %s\tlen: %lu\tend: %lu\n",
-               c_ptr->str, c_ptr->strpos, c_ptr->stp, c_ptr->len, (c_ptr->strpos+c_ptr->len));
+        printf("found at: %lu\tlen: %lu\tend: %lu\n",
+            c_ptr->strpos, c_ptr->len, (c_ptr->strpos+c_ptr->len));
     else
         ctrl.error = 0;
     
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
         ctrl.error = 0;
     
     
-/* ================================================ TRANSLATE ================================================ */
+/* ================================================ UTR REGIONS ================================================ */
     
     UTR_T *u_ptr;
     u_ptr = getutr(s_ptr, c_ptr);

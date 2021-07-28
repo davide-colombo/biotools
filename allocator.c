@@ -9,29 +9,20 @@
 
 /* this function acts like an OOP constructor for object of type CDS */
 
-CDS_T *cds_t(char *str, char *stp, FPOS_T strpos, LEN_T len){
+CDS_T *cds_t(SEQ *s_ptr, FPOS_T strpos, LEN_T len){
     CDS_T *c_ptr;
-    if((c_ptr = alloc_cds()) == NULL)
+    if((c_ptr = (CDS_T *)malloc(sizeof(*c_ptr))) == NULL)
         return NULL;
-    c_ptr->str = alloc_chararray(strlen(str));
-    c_ptr->stp = alloc_chararray(strlen(stp));
-    strcpy(c_ptr->str, str);
-    strcpy(c_ptr->stp, stp);
+    c_ptr->seq = s_ptr;
     c_ptr->strpos = strpos;
     c_ptr->len = len;
     return c_ptr;
 }
 
-CDS_T *alloc_cds(void){
-    return (CDS_T *)malloc(sizeof(CDS_T));
-}
-
 void free_cds_t(CDS_T *ptr){
     if(ptr == NULL)
         return;
-    
-    free((void *)ptr->str);
-    free((void *)ptr->stp);
+    ptr->seq = NULL;
     free((void *)ptr);
 }
 

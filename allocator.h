@@ -13,7 +13,7 @@
 #include "biotypes.h"
 #include "biostr.h"
 
-CDS_T *cds_t(char *str, char *stp, FPOS_T strpos, LEN_T len);
+CDS_T *cds_t(SEQ *s_ptr, FPOS_T strpos, LEN_T len);
 CDS_T *alloc_cds(void);
 void free_cds_t(CDS_T *);
 
