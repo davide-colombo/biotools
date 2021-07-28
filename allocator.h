@@ -28,7 +28,7 @@ OCC *occ(FPOS_T fpos, FPOS_T flen);
 void free_occ(OCC *ptr);
 OCC *alloc_occ(void);
 
-SEQ *alloc_sequence(void);
+SEQ *make_seq(char *name, char *seq);
 char *alloc_chararray(LEN_T size);
 char *realloc_chararray(char *, LEN_T size);
 

@@ -89,8 +89,18 @@ OCC *alloc_occ(void){
     return (OCC *)malloc(sizeof(OCC));
 }
 
-SEQ *alloc_sequence(void){
-    return (SEQ *)malloc(sizeof(SEQ));
+/* function for allocating sequence: NO FLAG INITIALIZATION IS DONE HERE!!!! */
+
+SEQ *make_seq(char *name, char *seq){
+    SEQ *s_ptr;
+    if((s_ptr = (SEQ *)malloc(sizeof(*s_ptr))) == NULL)
+        return NULL;
+    s_ptr->name = alloc_chararray(strlen(name)+1);
+    strcpy(s_ptr->name, name);
+    s_ptr->seq = alloc_chararray(strlen(seq)+1);
+    strcpy(s_ptr->seq, seq);
+    
+    return s_ptr;
 }
 
 char *alloc_chararray(LEN_T size){

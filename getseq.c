@@ -10,19 +10,15 @@
 SEQ *getseq(FILE *fp){
     
     unsigned long size = INITSIZE;                                          /* the size of the arrays */
-    SEQ *s_ptr;                                                             /* pointer to SEQ object */
     
-    if((s_ptr = alloc_sequence()) == NULL){                                  /* alloc memory for SEQ object */
-        raise_error("getseq() can't alloc memory for 'SEQ *' object\n");
-        return NULL;
-    }
-    
-    if((s_ptr->seq = alloc_chararray(size)) == NULL){                        /* alloc memory for 'char' array that stores the sequence */
+    char *seq;
+    if((seq = alloc_chararray(size)) == NULL){                        /* alloc memory for 'char' array that stores the sequence */
         raise_error("getseq() can't alloc memory for 'char' array\n");
         return NULL;
     }
     
-    if((s_ptr->name = alloc_chararray(size)) == NULL){                       /* alloc memory for 'char' array that stores the name */
+    char *name;
+    if((name = alloc_chararray(size)) == NULL){                       /* alloc memory for 'char' array that stores the name */
         raise_error("getseq() can't alloc memory for 'char' array\n");
         return NULL;
     }
@@ -38,7 +34,27 @@ SEQ *getseq(FILE *fp){
         return NULL;
     }
     
-    strcpy(s_ptr->name, line);                                              /* copy the line included '\0' */
+    strcpy(name, line);                                              /* copy the line included '\0' */
+    
+    LEN_T len, i;
+    for(i = 0; (len = fgetline(fp, line, size)) > 0; i += len){
+        if(i+len >= size)
+            if((seq = realloc_chararray(seq, size+=EXPAND)) == NULL){
+                raise_error("getseq() try to realloc memory but fails. Target size = %lu\n", size);
+                return NULL;
+            }
+        
+        strcpy_from(seq, line, i);
+        
+        if(ctrl.eof)
+            break;
+    }
+    
+    SEQ *s_ptr;                                                             /* pointer to SEQ object */
+    if((s_ptr = make_seq(name, seq)) == NULL){                              /* alloc memory for SEQ object */
+        raise_error("getseq() can't alloc memory for 'SEQ *' object\n");
+        return NULL;
+    }
     
     if(strstr(s_ptr->name, "protein") != NULL)                              /* determine if is a protein */
         s_ptr->is_pro = 1;
@@ -46,20 +62,6 @@ SEQ *getseq(FILE *fp){
         s_ptr->is_rna = 1;
     else
         s_ptr->is_dna = 1;
-        
-    LEN_T len, i;
-    for(i = 0; (len = fgetline(fp, line, size)) > 0; i += len){
-        if(i+len >= size)
-            if((s_ptr->seq = realloc_chararray(s_ptr->seq, size+=EXPAND)) == NULL){
-                raise_error("getseq() try to realloc memory but fails. Target size = %lu\n", size);
-                return NULL;
-            }
-        
-        strcpy_from(s_ptr->seq, line, i);
-        
-        if(ctrl.eof)
-            break;
-    }
     
     ctrl.eof = 0;                                                           /* initialize global variable after its use */
     return s_ptr;
