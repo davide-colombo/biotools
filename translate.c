@@ -22,7 +22,8 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
         return NULL;
     }
     
-    LEN_T n_aa = (strlen(s_ptr->seq)-1) / 3;                                /* -1 because the stop codon has no ammino acid associated */
+    LEN_T n_aa = (cds->len - 1) / 3;                                /* -1 because the stop codon has no ammino acid associated */
+    
     if((p_ptr->seq = alloc_chararray(n_aa)) == NULL){
         raise_error("translate() fails to alloc memory for sequence string\n");
         return NULL;
@@ -42,9 +43,9 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
     
     struct llist *node;
     int i, j;
-    for(i = j = 0; i < strlen(ptr); i++){                                      /* condition on 'strlen' is a better test condition */
+    for(i = cds->strpos, j = 0; i < (cds->len+cds->strpos); i++){           /* condition on 'strlen' is a better test condition */
         *bufp++ = ptr[i];
-        if((i+1) % CODONLEN)
+        if((i-cds->strpos+1) % CODONLEN)
             continue;
         *bufp = '\0';
         
@@ -52,12 +53,10 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
             raise_error("translate() fails lookup of a node\n");
             return NULL;
         }
-        
         new[j++] = *node->amm;
-        printf("amm: = %c\n", *node->amm);
-        // TODO: REMOVE ITEMS IN THE LIST WITH EMPTY AMMINO ACID
         bufp = buf;
     }
     
+    new[j] = '\0';
     return p_ptr;
 }

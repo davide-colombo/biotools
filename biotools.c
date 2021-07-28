@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
 /* ================================================ is valid cds? ================================================ */
     
     CDS_T *c_ptr;
-    c_ptr = getcds(s_ptr, 62UL);
+    c_ptr = getcds(s_ptr, 1306UL);                                            /* !!! PAY ATTENTION TO THIS LINE !!!*/
     if(!ctrl.error)
         printf("str: %s\tat %lu\tstp: %s\tlen: %lu\tend: %lu\n",
                c_ptr->str, c_ptr->strpos, c_ptr->stp, c_ptr->len, (c_ptr->strpos+c_ptr->len));
@@ -121,6 +121,7 @@ int main(int argc, char *argv[]){
     
     free((void *) node);
     
+    /*
     int j;
     for(i = j = 0; i < HASHSIZE; i++){
         if((node = codontab[i]) == NULL)
@@ -136,6 +137,7 @@ int main(int argc, char *argv[]){
     }
     
     printf("ncodons = %d\n", j);
+    */
     
     fclose(fp1);
     
@@ -147,6 +149,7 @@ int main(int argc, char *argv[]){
         printf("translated seq: %s\n", pro_ptr->name);
         for(i = 0; i < strlen(pro_ptr->seq); i++)
             printf("%c", (pro_ptr->seq)[i]);
+        printf("\n");
     }else
         ctrl.error = 0;
     
