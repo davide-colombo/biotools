@@ -22,7 +22,7 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
         return NULL;
     }
     
-    LEN_T n_aa = (cds->len - 1) / 3;                                /* -1 because the stop codon has no ammino acid associated */
+    LEN_T n_aa = (cds->len - 1) / 3;                                        /* -1 because the stop codon has no ammino acid associated */
     
     if((p_ptr->seq = alloc_chararray(n_aa)) == NULL){
         raise_error("translate() fails to alloc memory for sequence string\n");
@@ -41,11 +41,13 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
     char buf[CODONLEN+1];                                                   /* for storing the translated sequence */
     char *bufp = buf;                                                       /* pointer to the top of the buffer */
     
+    FPOS_T off = cds->strpos;                                               /* offset position to use in the test conditions of the cycle */
     struct llist *node;
-    int i, j;
-    for(i = cds->strpos, j = 0; i < (cds->len+cds->strpos); i++){           /* condition on 'strlen' is a better test condition */
+    int i;                                                                  /* index used to cycle on codons */
+    int j;                                                                  /* index used to keep track of ammino */
+    for(i = cds->strpos, j = 0; i < (cds->len+off); i++){                   /* condition on 'strlen' is a better test condition */
         *bufp++ = ptr[i];
-        if((i-cds->strpos+1) % CODONLEN)
+        if((i-off+1) % CODONLEN)
             continue;
         *bufp = '\0';
         
@@ -53,10 +55,10 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
             raise_error("translate() fails lookup of a node\n");
             return NULL;
         }
-        new[j++] = *node->amm;
-        bufp = buf;
+        new[j++] = *node->amm;                                              /* add amminoacid to the string */
+        bufp = buf;                                                         /* re-initialize the pointer to 'buf'. 'buf' will be overridden */
     }
     
-    new[j] = '\0';
+    new[j] = '\0';                                                          /* don't forget to end the string */
     return p_ptr;
 }
