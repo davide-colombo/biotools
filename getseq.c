@@ -83,6 +83,10 @@ SEQ **get_multiseq(FILE *fp){
             raise_error("get_multiseq() fails: getseq() return NULL\n");
             return parr;
         }
+    
+    if(ctrl.eof)
+        ctrl.eof = 0;
+    
     return parr;
     
 }

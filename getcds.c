@@ -17,7 +17,7 @@ CDS_T *getcds(SEQ *s_ptr, FPOS_T strpos){
     
     strncpy_from(start, ptr, strpos, CODONLEN);                         /* copy the first CODONLEN starting at 'strpos' */
     
-    if(!IS_START(start)){                                                /* check valid start codon */
+    if(!IS_START(start)){                                               /* check valid start codon */
         raise_error("getcds() fails because 'start' is not a valid codon\n");
         return NULL;
     }

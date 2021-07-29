@@ -48,36 +48,25 @@ int main(int argc, char *argv[]){
     }else
         return 2;
     
+    SEQ *gene = ptrarr[0];                      /* gene sequence object */
+    SEQ *trs1 = ptrarr[1];                      /* transcript sequence object */
     
-    return 0;
+    fclose(fp);                                 /* remember to close the file */
     
 /* ================================================ REVERSE COMPLEMENT ================================================ */
     
     SEQ *r_ptr;
-    r_ptr = revcomp(s_ptr);
+    r_ptr = revcomp(gene);
     if(!ctrl.error){
         printf("name:\t%s\n", r_ptr->name);
         printf("revcom:\t%s\n", r_ptr->seq);
     }else
         ctrl.error = 0;
     
-/* ================================================ is valid cds? ================================================ */
-    /* this snippet of code can be removed */
-    
-    /*
-    CDS_T *c_ptr;
-    c_ptr = getcds(s_ptr, 1306UL);
-    if(!ctrl.error)
-        printf("found at: %lu\tlen: %lu\tend: %lu\n",
-            c_ptr->strpos, c_ptr->len, (c_ptr->strpos+c_ptr->len));
-    else
-        ctrl.error = 0;
-    */
-    
 /* ================================================ TRANSCRIPTION ================================================ */
     
     SEQ *t_ptr;
-    t_ptr = transcript(s_ptr);
+    t_ptr = transcript(gene);
     if(!ctrl.error){
         printf("name:\t%s\n", t_ptr->name);
         printf("mRNA:\t%s\n", t_ptr->seq);
@@ -86,9 +75,9 @@ int main(int argc, char *argv[]){
     
 /* ================================================ GENE INFO ================================================ */
     
-    printf("len:\t%lu\n", genelen(s_ptr));                                  /* get gene length */
+    printf("len:\t%lu\n", genelen(gene));                                  /* get gene length */
     
-    printf("GC%%:\t%.4g\n", gcperc(s_ptr));                                 /* gc percentage */
+    printf("GC%%:\t%.4g\n", gcperc(gene));                                 /* gc percentage */
     
 /* ================================================ search a plain text sequence ================================================ */
     
@@ -98,7 +87,7 @@ int main(int argc, char *argv[]){
     
     OCC **fptr;
     LEN_T nocc;
-    fptr = findocc(&nocc, s_ptr, targ);                                     /* find occurrences and get the count */
+    fptr = findocc(&nocc, trs1, targ);                                      /* find occurrences and get the count */
     
     LEN_T i;
     for(i = 0; i < nocc; i++)
@@ -110,13 +99,15 @@ int main(int argc, char *argv[]){
 /* ================================================ search a repeated sequence ================================================ */
     
     CDS_T *c_ptr;
-    c_ptr = search_cds(s_ptr, fptr, nocc);
-    if(!ctrl.error){
-        printf("found at: %lu\tlen: %lu\tend: %lu\n",
-            c_ptr->strpos, c_ptr->len, (c_ptr->strpos+c_ptr->len));
+    if(nocc != 0){
+        c_ptr = search_cds(trs1, fptr, nocc);
+        if(!ctrl.error){
+            printf("found at: %lu\tlen: %lu\tend: %lu\n",
+                c_ptr->strpos, c_ptr->len, (c_ptr->strpos+c_ptr->len));
+        }
+        else
+            ctrl.error = 0;
     }
-    else
-        ctrl.error = 0;
     
 /* ================================================ search a repeated sequence ================================================ */
     
@@ -126,8 +117,9 @@ int main(int argc, char *argv[]){
     
     char repseq[] = "T";
     targ = srch_t(repseq, 3UL, UNSET);
-    fptr = findocc(&nocc, s_ptr, targ);
+    fptr = findocc(&nocc, trs1, targ);                                              /* 'findocc()' already initialize 'nocc' */
     
+    printf("In: %s\n", trs1->name);
     for(i = 0; i < nocc; i++)
         printf("(%lu) found occurrence of '%s' at %lu\n",
                i, targ->str, (*(fptr+i))->fpos);
@@ -154,7 +146,8 @@ int main(int argc, char *argv[]){
     
     free((void *) node);
     
-    /*
+    /* THIS SNIPPET OF CODE PRINTS ON THE STANDARD OUTPUT THE GENETIC CODE
+     
     int j;
     for(i = j = 0; i < HASHSIZE; i++){
         if((node = codontab[i]) == NULL)
@@ -177,7 +170,7 @@ int main(int argc, char *argv[]){
 /* ================================================ TRANSLATE ================================================ */
     
     SEQ *pro_ptr;
-    pro_ptr = translate(s_ptr, c_ptr);
+    pro_ptr = translate(trs1, c_ptr);
     if(!ctrl.error){
         printf("translated seq: %s\n", pro_ptr->name);
         for(i = 0; i < strlen(pro_ptr->seq); i++)
@@ -190,7 +183,7 @@ int main(int argc, char *argv[]){
 /* ================================================ UTR REGIONS ================================================ */
     
     UTR_T *u_ptr;
-    u_ptr = getutr(s_ptr, c_ptr);
+    u_ptr = getutr(trs1, c_ptr);
     if(!ctrl.error){
         printf("5' - strpos = %lu\tlen = %lu\n", u_ptr->str5f, u_ptr->len5f);
         printf("3' - strpos = %lu\tlen = %lu\n", u_ptr->str3f, u_ptr->len3f);
