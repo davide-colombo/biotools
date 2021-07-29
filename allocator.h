@@ -29,6 +29,8 @@ void free_occ(OCC *ptr);
 OCC *alloc_occ(void);
 
 SEQ *make_seq(void);
+void free_seq(SEQ *);
+
 char *alloc_chararray(LEN_T size);
 char *realloc_chararray(char *, LEN_T size);
 

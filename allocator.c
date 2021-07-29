@@ -95,6 +95,14 @@ SEQ *make_seq(void){
     return (SEQ *)malloc(sizeof(SEQ));
 }
 
+void free_seq(SEQ *s_ptr){
+    if(s_ptr == NULL)
+        return;
+    free((void *)s_ptr->name);
+    free((void *)s_ptr->seq);
+    free((void *)s_ptr);
+}
+
 char *alloc_chararray(LEN_T size){
     return (char *)malloc(sizeof(char) * (size+1));             /* +1 for '\0' */
 }

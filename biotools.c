@@ -17,28 +17,56 @@ int main(int argc, char *argv[]){
     if((fp = fopen(argv[1], "r")) == NULL)                                  /* try to open the file */
         raise_error("main() can't open file at '%s'\n", argv[1]);
     
-/* ================================================ READ THE SEQUENCE ================================================ */
+/* ================================================ READ THE GENETIC CODE ================================================ */
     
-    SEQ *s_ptr;
-    /*
-    s_ptr = getseq(fp);
-    if(!ctrl.error){
-        printf("name:\t%s\n", s_ptr->name);
-        printf("string:\t%s\n", s_ptr->seq);
-        printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
-               s_ptr->is_dna, s_ptr->is_rna, s_ptr->is_pro);
-    }else
-        return 1;*/
-
+    FILE *fp1;
+    
+    if((fp1 = fopen("gcode.txt", "r")) == NULL)                      /* open the file in read mode */
+        return 1;
+    
+    LEN_T i;
+    struct llist *node;
+    for(i = 0; (node = fgetnode_tok(fp1)) != NULL; i++){
+        install_or_error(node);
+        if(ctrl.error){
+            raise_error("main() can't install node in the linked list\n");
+            ctrl.error = 0;
+            break;
+        }
+    }
+    
+    free((void *) node);
+    
+    /* THIS SNIPPET OF CODE PRINTS ON THE STANDARD OUTPUT THE GENETIC CODE
+     
+    int j;
+    for(i = j = 0; i < HASHSIZE; i++){
+        if((node = codontab[i]) == NULL)
+            continue;
+        
+        for(; node != NULL; node = node->next, j++){
+            printf("cdn: %s\n", node->cdn);
+            printf("amm: %s\n", node->amm);
+            printf("is_start: %d\n", node->is_start);
+            printf("is_stop: %d\n", node->is_stop);
+            printf(" ============================================================ \n");
+        }
+    }
+    
+    printf("ncodons = %d\n", j);
+    */
+    
+    fclose(fp1);
     
 /* ================================================ GET MULTIPLE SEQUENCES WITHIN A FILE ================================================ */
     
     SEQ **ptrarr;
-    ptrarr = get_multiseq(fp);
+    ptrarr = get_multiseq(fp);                  /* fill the sequence array of pointers */
+    fclose(fp);                                 /* close the file */
     
     int k;
     if(!ctrl.error){
-        for(k = 0; k < 2; k++){
+        for(k = 0; ptrarr[k]; k++){
             printf("name:\t%s\n", (ptrarr[k])->name);
             printf("string:\t%s\n", (ptrarr[k])->seq);
             printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
@@ -50,8 +78,6 @@ int main(int argc, char *argv[]){
     
     SEQ *gene = ptrarr[0];                      /* gene sequence object */
     SEQ *trs1 = ptrarr[1];                      /* transcript sequence object */
-    
-    fclose(fp);                                 /* remember to close the file */
     
 /* ================================================ REVERSE COMPLEMENT ================================================ */
     
@@ -89,7 +115,6 @@ int main(int argc, char *argv[]){
     LEN_T nocc;
     fptr = findocc(&nocc, trs1, targ);                                      /* find occurrences and get the count */
     
-    LEN_T i;
     for(i = 0; i < nocc; i++)
         printf("(%lu) found occurrence of '%s' at %lu\n",
                i, targ->str, (*(fptr+i))->fpos);
@@ -126,47 +151,6 @@ int main(int argc, char *argv[]){
         
     printf("nocc:\t%lu\n", nocc);
     
-    
-/* ================================================ READ THE GENETIC CODE ================================================ */
-    
-    FILE *fp1;
-    
-    if((fp1 = fopen("gcode.txt", "r")) == NULL)                      /* open the file in read mode */
-        return 1;
-    
-    struct llist *node;
-    for(i = 0; (node = fgetnode_tok(fp1)) != NULL; i++){
-        install_or_error(node);
-        if(ctrl.error){
-            raise_error("main() can't install node in the linked list\n");
-            ctrl.error = 0;
-            break;
-        }
-    }
-    
-    free((void *) node);
-    
-    /* THIS SNIPPET OF CODE PRINTS ON THE STANDARD OUTPUT THE GENETIC CODE
-     
-    int j;
-    for(i = j = 0; i < HASHSIZE; i++){
-        if((node = codontab[i]) == NULL)
-            continue;
-        
-        for(; node != NULL; node = node->next, j++){
-            printf("cdn: %s\n", node->cdn);
-            printf("amm: %s\n", node->amm);
-            printf("is_start: %d\n", node->is_start);
-            printf("is_stop: %d\n", node->is_stop);
-            printf(" ============================================================ \n");
-        }
-    }
-    
-    printf("ncodons = %d\n", j);
-    */
-    
-    fclose(fp1);
-    
 /* ================================================ TRANSLATE ================================================ */
     
     SEQ *pro_ptr;
@@ -190,6 +174,22 @@ int main(int argc, char *argv[]){
     }else
         ctrl.error = 0;
     
+    
+/* ================================================ FREE MEMORY ================================================ */
+    
+    for(k = 0; ptrarr[k]; k++)                  /* free all the sequences read from the file passed as argument */
+        free_seq(ptrarr[k]);
+    free((void *)ptrarr);
+    
+    free_seq(r_ptr);                            /* free reverse complement sequence (if any) */
+    free_seq(t_ptr);                            /* free transcript sequence (if any) */
+    
+    free_srch_t(targ);                          /* free target object */
+    
+    free_occptr_arr(fptr);                      /* free array of occurrences */
+    
+    free_cds_t(c_ptr);                          /* free CDS sequence */
+    free_seq(pro_ptr);                          /* free translated protein sequence */
     
     return 0;
 }
