@@ -29,16 +29,16 @@ LEN_T fgetline(FILE *fp, char *s, LEN_T lim){
         
         if(c == '>'){
             ctrl.header = 1;
-            putbuf(c);                                  /* save the '>' sign to the buffer for the next time I call this function */
+            putbuf(c);                                      /* save the '>' sign to the buffer for the next time I call this function */
             return 0;
         }
-        
         s[i++] = c;                     /* this is done inside the if statement to avoid to loose the char read for testing the conditions */
     }else
         ctrl.header = 0;
     
-    for(; --lim > 0 && (c = getbuf(fp)) != EOF && c != '\n'; i++)
+    for(; --lim > 0 && (c = getbuf(fp)) != EOF && c != '\n'; i++){
         s[i] = c;
+    }
     s[i] = '\0';
     
     if(c == EOF)

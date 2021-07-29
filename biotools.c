@@ -38,15 +38,13 @@ int main(int argc, char *argv[]){
     
     int k;
     if(!ctrl.error){
-        /*
-        printf("*ptrarr == NULL? %s\n", (*ptrarr == NULL) ? "TRUE" : "FALSE");
         for(k = 0; k < 2; k++){
             printf("name:\t%s\n", (ptrarr[k])->name);
             printf("string:\t%s\n", (ptrarr[k])->seq);
             printf("is_dna = %ud\tis_rna = %ud\tis_pro = %ud\n",
                    (ptrarr[k])->is_dna, (ptrarr[k])->is_rna, (ptrarr[k])->is_pro);
             printf("\n\n\n\n");
-        }*/
+        }
     }else
         return 2;
     

@@ -16,22 +16,27 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
         return NULL;
     }
     
+    SEQ *p_ptr;
+    if((p_ptr = make_seq()) == NULL){
+        raise_error("translate() fails to alloc memory space for pointer to SEQ object\n");
+        return NULL;
+    }
+    
     LEN_T n_aa = (cds->len - 1) / 3;                                        /* -1 because the stop codon has no ammino acid associated */
     
-    char *seq;
-    if((seq = alloc_chararray(n_aa)) == NULL){
+    if((p_ptr->seq = alloc_chararray(n_aa)) == NULL){
         raise_error("translate() fails to alloc memory for sequence string\n");
         return NULL;
     }
 
-    char *name;
-    if((name = sappend(s_ptr->name, "_protein")) == NULL){           /* 'sappend' duplicate and appen the new string */
+    if((p_ptr->name = sappend(s_ptr->name, "_protein")) == NULL){           /* 'sappend' duplicate and appen the new string */
         raise_error("translate() fails to append name\n");
         return NULL;
     }
     
-    char *ptr;
+    char *ptr, *seq;
     ptr = s_ptr->seq;
+    seq = p_ptr->seq;
     
     char buf[CODONLEN+1];                                                   /* for storing the translated sequence */
     char *bufp = buf;                                                       /* pointer to the top of the buffer */
@@ -55,13 +60,6 @@ SEQ *translate(SEQ *s_ptr, CDS_T *cds){
     }
     
     seq[j] = '\0';                                                          /* don't forget to end the string */
-    
-    
-    SEQ *p_ptr;
-    if((p_ptr = make_seq(name, seq)) == NULL){
-        raise_error("translate() fails to alloc memory space for pointer to SEQ object\n");
-        return NULL;
-    }
     
     s_ptr->is_pro = 1;                                                      /* set the SEQ type flag */
     

@@ -91,16 +91,8 @@ OCC *alloc_occ(void){
 
 /* function for allocating sequence: NO FLAG INITIALIZATION IS DONE HERE!!!! */
 
-SEQ *make_seq(char *name, char *seq){
-    SEQ *s_ptr;
-    if((s_ptr = (SEQ *)malloc(sizeof(*s_ptr))) == NULL)
-        return NULL;
-    s_ptr->name = alloc_chararray(strlen(name)+1);
-    strcpy(s_ptr->name, name);
-    s_ptr->seq = alloc_chararray(strlen(seq)+1);
-    strcpy(s_ptr->seq, seq);
-    
-    return s_ptr;
+SEQ *make_seq(void){
+    return (SEQ *)malloc(sizeof(SEQ));
 }
 
 char *alloc_chararray(LEN_T size){
@@ -111,7 +103,7 @@ char *realloc_chararray(char *s, LEN_T size){
     char *ptr;
     if((ptr = alloc_chararray(size)) == NULL)
         return NULL;
-    strcpy_from(ptr, s, 0);                                     /* save the content of 's' in 'ptr' starting at 0*/
+    strcpy_from(ptr, s, 0);                                     /* save the content of 's' in 'ptr' starting at 0 */
     free((void *)s);                                            /* free the previous content of the array */
     return ptr;
 }

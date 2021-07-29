@@ -14,31 +14,29 @@ SEQ *transcript(SEQ *s_ptr){
         return NULL;
     }
     
-    char *name;                                                                     /* array for saving the name of the transcribed sequence */
-    if((name = sappend(s_ptr->name, "_transcript")) == NULL){                       /* alloc memory for char array of the sequence name */
+    SEQ *t_ptr;                                                                     /* pointer to transcripted SEQ object */
+    if((t_ptr = make_seq()) == NULL){                                           /* alloc SEQ object */
+        raise_error("transcript() can't alloc memory for pointer to SEQ object\n");
+        return NULL;
+    }
+                                                                    /* array for saving the name of the transcribed sequence */
+    if((t_ptr->name = sappend(s_ptr->name, "_transcript")) == NULL){                       /* alloc memory for char array of the sequence name */
         raise_error("transcript() fails to append name\n");
         return NULL;
     }
-
-    char *seq;                                                                      /* alloc memory for the transcribe sequence itself */
-    if((seq = alloc_chararray(strlen(s_ptr->seq))) == NULL){                        /* alloc memory for char array of the sequence string */
+                                                                  /* alloc memory for the transcribe sequence itself */
+    if((t_ptr->seq = alloc_chararray(strlen(s_ptr->seq))) == NULL){                        /* alloc memory for char array of the sequence string */
         raise_error("transcript() fails to alloc sequence char array\n");
         return NULL;
     }
     
-    char *temp;                                                                     /* use pointers to char to improve code readability */
+    char *temp, *seq;                                                                     /* use pointers to char to improve code readability */
     temp = s_ptr->seq;
+    seq = t_ptr->seq;
     
     FPOS_T i;
     for(i = 0; isalpha(temp[i]); i++)
         seq[i] = (temp[i] == 'T') ? temp[i]+1 : temp[i];                            /* temp[i]+1 == 'U' */
-    
-    
-    SEQ *t_ptr;                                                                     /* pointer to transcripted SEQ object */
-    if((t_ptr = make_seq(name, seq)) == NULL){                                           /* alloc SEQ object */
-        raise_error("transcript() can't alloc memory for pointer to SEQ object\n");
-        return NULL;
-    }
     
     t_ptr->is_rna = 1;                                                              /* set the type flag */
     
